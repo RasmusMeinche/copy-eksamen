@@ -1,7 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
+      "@/*": ["src/*"]
+    },
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "allowJs": true
+  },
+  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx", "src/app/layout.tsx"],
+  "exclude": ["node_modules"]
 }
