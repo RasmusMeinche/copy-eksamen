@@ -1,7 +1,8 @@
+"use client"
 
 const Footer = () => {
     return (
-        <section className="bg-[#252525] text-[#8F8997] flex flex-row justify-between gap-10 px-20 py-10">
+        <section className="bg-[#252525] text-[#8F8997] flex flex-row justify-between gap-10 px-20 py-10 w-full">
             <div>
                 <h1 className="text-[#F5F5F5] text-3xl mb-5">KONTAKTINFORMATION</h1>
                 <h2 className="text-[#F5F5F5] text-2xl mb-5">ADRESSE</h2>
