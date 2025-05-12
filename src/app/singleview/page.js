@@ -12,7 +12,7 @@ const Singleview = async ({ info }) => {
         {filteredItems.map(art => (
           <li className="border-2 border-black w-[400px] p-5 m-5" key={art.id}>
             <strong>{art.titles?.[0]?.title}</strong><br />
-            Artist: {art.artist || art.production?.[0]?.creator?.name}<br />
+            Artist: {art.artist}<br />
             Period: {art.production_date?.period || "N/A"}<br />
             Technique: {art.techniques}<br />
             <img src={art.image_thumbnail} className="mt-2 w-full" />
