@@ -5,9 +5,9 @@ const Eventliste = async ({ info }) => {
   console.log(dataVaerker.items);
   return (
     <section>
-      {dataVaerker.items.map((vaerk) => (
-        <article key={vaerk.id}>
-          <h1>{vaerk.object_number}</h1>
+      {dataVaerker.items.map((art) => (
+        <article key={art.id}>
+          <h1>{art.object_number}</h1>
         </article>
       ))}
     </section>
