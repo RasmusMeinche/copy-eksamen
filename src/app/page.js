@@ -1,6 +1,6 @@
 "use client";
 import Footer from "./components/Footer";
-import Singleview from "./eventliste/Singleview";
+import Singleview from "./singleview/Singleview";
 
 export default function Home() {
   return (
