@@ -1,15 +1,17 @@
-import FetchData from "../fetch/FetchData";
+import { getData } from "@/lib/smk";
 
-const Eventliste = ({ info }) => {
-    return (
-        <section>
-            {info.items.map((vaerk) => (
-                <article>
-                    <h1>{vaerk.title}</h1>
-                </article>
-            ))}
-       </section>
-    );
+const Eventliste = async ({ info }) => {
+  const myData = await getData();
+  console.log(myData.items);
+  return (
+    <section>
+      {myData.items.map((vaerk) => (
+        <article key={vaerk.id}>
+          <h1>{vaerk.object_number}</h1>
+        </article>
+      ))}
+    </section>
+  );
 };
 
 export default Eventliste;

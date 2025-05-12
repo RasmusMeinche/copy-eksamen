@@ -1,0 +1,7 @@
+export async function getData() {
+  const data = await fetch(
+    "https://api.smk.dk/api/v1/art/search/?keys=*&offset=0&rows=100"
+  );
+  const res = await data.json();
+  return res;
+}
