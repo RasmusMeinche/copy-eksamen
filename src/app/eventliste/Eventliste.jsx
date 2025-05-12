@@ -1,23 +1,11 @@
-import { getLocalData } from "@/lib/local";
+import { EventCard } from "../components/EventCard";
 
-const Eventliste = async () => {
-  const localData = await getLocalData();
-  console.log(localData);
-
+function Eventliste() {
   return (
-    <section className="flex flex-col justify-center">
-          {localData.map((event) => (
-            <div key={event.id}>
-              {event.title}
-              {event.description}
-              {event.date}
-              {event.curator}
-              {event.totalTickets}
-              {event.bookedTickets}
-            </div>
-          ))}
-    </section>
+    <div>
+      <EventCard />
+    </div>
   );
-};
+}
 
 export default Eventliste;
