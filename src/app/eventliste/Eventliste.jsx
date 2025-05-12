@@ -1,10 +1,12 @@
-import FetchData from "../fetch/Fetchdata";
+import FetchData from "../fetch/FetchData";
 
 const Eventliste = ({ info }) => {
     return (
         <section>
-            {info.map((vaerker) => (
-            <h1>{info.items.title}</h1>
+            {info.items.map((vaerk) => (
+                <article>
+                    <h1>{vaerk.title}</h1>
+                </article>
             ))}
        </section>
     );
