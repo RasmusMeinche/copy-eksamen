@@ -3,7 +3,7 @@ import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 
-const Header = ({ title }) => {
+const Header = ({ title, bgColor = "#800000" }) => { // Standard header farve heroppe guys
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -12,7 +12,10 @@ const Header = ({ title }) => {
   };
 
   return (
-    <section className="relative flex justify-between items-center text-white p-4 px-8 bg-[#800000]">
+    <section
+      className="relative flex justify-between items-center text-white p-4 px-8"
+      style={{ backgroundColor: bgColor }} // Header farve på singleview sider og eventuelt events?
+    >
       <div className="flex items-center gap-4">
         <Image
           src="/img/SMK_MiniLogo_White.png"
