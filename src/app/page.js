@@ -1,12 +1,12 @@
 "use client";
 import Footer from "./components/Footer";
-import Eventliste from "./eventliste/Eventliste";
+import Singleview from "./eventliste/Singleview";
 
 export default function Home() {
   return (
     <section>
+      <Singleview />
       <Footer />
-      <Eventliste />
     </section>
   )
 }
