@@ -1,4 +1,8 @@
+"use client";
+
 import { getData } from "@/lib/smk";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 
 const Singleview = async ({ info }) => {
   const dataVaerker = await getData();
@@ -8,6 +12,7 @@ const Singleview = async ({ info }) => {
 
   return (
     <section>
+      <Header />
       <ul className="grid grid-cols-3 gap-4">
         {filteredItems.map(art => (
           <li className="border-2 border-black w-[400px] p-5 m-5" key={art.id}>
@@ -19,6 +24,7 @@ const Singleview = async ({ info }) => {
           </li>
         ))}
       </ul>
+      <Footer />
     </section>
   );
 };
