@@ -1,17 +1,23 @@
 import { getLocalData } from "@/lib/local";
 
-const page = async () => {
+const Eventliste = async () => {
   const localData = await getLocalData();
   console.log(localData);
 
-
-
   return (
-    <section>
-
-          <h1>{localData.events}</h1>
+    <section className="flex flex-col justify-center">
+          {localData.map((event) => (
+            <div key={event.id}>
+              {event.title}
+              {event.description}
+              {event.date}
+              {event.curator}
+              {event.totalTickets}
+              {event.bookedTickets}
+            </div>
+          ))}
     </section>
   );
 };
 
-export default page;
+export default Eventliste;
