@@ -17,23 +17,23 @@ export const EventCard = async () => {
         return (
           <div
             key={event.id}
-            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border gap-4 mb-4 mt-4 border-white text-white w-full"
+            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border mb-10 mt-10 border-white text-white w-full"
           >
             <div className="flex gap-4 border border-white items-center p-4">
-              <div>
+              <div className="h-full ">
                 <Image
                   src={imageUrl}
                   alt="Event Image"
                   width={300}
                   height={300}
-                  className="bg-amber-50 w-full"
+                  className="bg-amber-50 h-full object-cover"
                 />
               </div>
               <div className="flex flex-col justify-between w-full leading-none">
                 <h1 className="font-medium text-3xl">{event.title}</h1>
                 <p className="mb-4 font-thin text-xl">{event.curator}</p>
                 <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">{event.description}</p>
-                  <div className="flex flex-row justify-between items-center">
+                  <div className="flex flex-row justify-between items-end">
                     <p className="font-extralight text-2xl">{event.date}</p>
                     <Button title="Læs Mere"/>
                   </div>
