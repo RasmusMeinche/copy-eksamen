@@ -1,7 +1,13 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs';
+import { ClerkProvider } from '@clerk/nextjs';import { Roboto, Lora } from "next/font/google";
 
+const robotoCondensed = Roboto_Condensed({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-roboto-condensed",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,13 +27,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          {children}
-        </body>
-      </html>
+       <html lang="da" className={robotoCondensed.variable}>
+      <body className="font-roboto-condensed">{children}</body>
+    </html>
     </ClerkProvider>
   );
 }
