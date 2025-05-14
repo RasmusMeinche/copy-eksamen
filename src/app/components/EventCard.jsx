@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Roboto } from "next/font/google";
 import Button from "./Button";
 
+
 export const EventCard = async () => {
   const localData = await getLocalData();
   console.log(localData);
