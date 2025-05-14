@@ -8,7 +8,6 @@ export const EventCard = async () => {
   const imageUrl = await fetch(
     `https://iip-thumb.smk.dk/iiif/jp2/1z40kx99j_${imageId}.tif.jp2/full/!1024,/0/default.jpg`
   );
-  /* const imageData = imageUrl.json(); */
   
 
   return (
