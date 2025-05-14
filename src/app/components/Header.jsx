@@ -1,9 +1,11 @@
+"use client";
 import { useState } from "react";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 
-const Header = ({ title, bgColor = "#800000" }) => { // Standard header farve heroppe guys
+const Header = ({ title, bgColor = "#800000" }) => {
+  // Standard header farve heroppe guys
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
