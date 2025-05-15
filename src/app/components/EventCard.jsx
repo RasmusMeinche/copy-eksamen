@@ -2,6 +2,8 @@ import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import layout from "@/app/layout";
 import Button from "./Button";
+import Kuratoredit from "./Kuratoredit";
+import { ClerkProvider, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
 
 export const EventCard = async () => {
@@ -9,6 +11,8 @@ export const EventCard = async () => {
   console.log(localData);
 
   return (
+    < ClerkProvider>
+      < SignedIn>
     <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
       {localData.map((event) => {
         const imageId = event.artworkIds[0];
@@ -31,7 +35,10 @@ export const EventCard = async () => {
                 />
               </div>
               <div className="flex flex-col justify-between w-full leading-none">
+                <div className="flex flex-row justify-between items-end">
                 <h1 className="font-medium text-3xl">{event.title}</h1>
+                < Kuratoredit />
+                </div>
                 <p className="mb-4 font-thin text-xl">{event.curator}</p>
                 <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">{event.description}</p>
                   <div className="flex flex-row justify-between items-end">
@@ -44,5 +51,7 @@ export const EventCard = async () => {
         );
       })}
     </section>
+    </SignedIn>
+  </ClerkProvider>
   );
 };
