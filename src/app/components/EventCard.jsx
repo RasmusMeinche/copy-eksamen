@@ -4,6 +4,7 @@ import layout from "@/app/layout";
 import Button from "./Button";
 import Kuratoredit from "./Kuratoredit";
 import { ClerkProvider, SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
+import PopoverWrapper from "./PopOver";
 
 
 export const EventCard = async () => {
@@ -22,7 +23,7 @@ export const EventCard = async () => {
         return (
           <div
             key={event.id}
-            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border mb-10 mt-10 border-white text-white w-full"
+            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border mb-10 mt-10 border-white text-white w-full overflow-visible"
           >
             <div className="flex gap-4 border border-white items-center p-4">
               <div className="h-full ">
@@ -37,7 +38,9 @@ export const EventCard = async () => {
               <div className="flex flex-col justify-between w-full leading-none">
                 <div className="flex flex-row justify-between items-end">
                 <h1 className="font-medium text-3xl">{event.title}</h1>
-                < Kuratoredit />
+                  {/* <SignedIn> */}
+                    <PopoverWrapper curator={event.curator} />
+                 {/*  </SignedIn> */}
                 </div>
                 <p className="mb-4 font-thin text-xl">{event.curator}</p>
                 <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">{event.description}</p>
