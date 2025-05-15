@@ -2,6 +2,7 @@ import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import { Roboto } from "next/font/google";
 import Button from "./Button";
+import Link from "next/link";
 
 
 export const EventCard = async () => {
