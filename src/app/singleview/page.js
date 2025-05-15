@@ -1,14 +1,32 @@
-"use client";
-
 import { getData } from "@/lib/smk";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 
-const Singleview = async ({ info }) => {
-  const dataVaerker = await getData();
-  console.log(dataVaerker.items);
+//////////////////////////////////////////////////////////////////////////////
 
-  const filteredItems = dataVaerker.items.filter(art => art.has_image);
+// Brug nedenstående kode til at vise flere værker
+
+// const Singleview = async ({ info }) => {
+//   const dataVaerker = await getData();
+//   console.log(dataVaerker.items);
+
+//   const filteredItems = dataVaerker.items.filter(art => art.has_image);
+
+//////////////////////////////////////////////////////////////////////////////
+
+//brug denne kode til at vise et enkelt værk
+
+  const dataVaerk_enkelt = 1;
+
+  const Singleview = async ({ info }) => {
+    const dataVaerker = await getData();
+    console.log(dataVaerker.items);
+  
+    const filteredItems = dataVaerker.items
+      .filter(art => art.has_image)
+      .slice(0, dataVaerk_enkelt);
+
+//////////////////////////////////////////////////////////////////////////////
 
   return (
     <section>
