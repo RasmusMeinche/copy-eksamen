@@ -1,8 +1,7 @@
 import { getLocalData } from "@/lib/local";
 import Image from "next/image";
-import { Roboto } from "next/font/google";
+import layout from "@/app/layout";
 import Button from "./Button";
-import Link from "next/link";
 
 
 export const EventCard = async () => {
@@ -37,9 +36,7 @@ export const EventCard = async () => {
                 <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">{event.description}</p>
                   <div className="flex flex-row justify-between items-end">
                     <p className="font-extralight text-2xl">{event.date}</p>
-                    <Link href={"/singleview"}>
                       <Button title="Læs Mere"/>
-                    </Link>
                   </div>
               </div>
             </div>
