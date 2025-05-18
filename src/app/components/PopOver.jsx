@@ -7,13 +7,17 @@ export default function SimplePopover() {
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <button> <Kuratoredit/> </button>
+        <Kuratoredit/>
       </Popover.Trigger>
       <Popover.Portal>
-        <Popover.Content className="bg-white text-black p-4 rounded shadow z-50">
-          <p>Hello popover</p>
-          <Popover.Arrow className="fill-white" />
-        </Popover.Content>
+     <Popover.Content
+  side="bottom"
+  sideOffset={10}
+  className="bg-white text-black p-4 rounded shadow-md border border-black z-[9999]"
+>
+  <p>Hello popover</p>
+  <Popover.Arrow className="fill-white" />
+</Popover.Content>
       </Popover.Portal>
     </Popover.Root>
   );
