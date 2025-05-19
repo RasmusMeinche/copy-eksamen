@@ -5,4 +5,3 @@ export async function getLocalData() {
     const res = await data.json();
     return res;
   }
-  

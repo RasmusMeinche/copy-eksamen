@@ -2,7 +2,8 @@ import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import Button from "./Button";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
-import PopoverWrapper from "./slug/[id]/PopOver";
+import Link from "next/link";
+import Kuratoredit from "./Kuratoredit";
 
 export const EventCard = async () => {
   const localData = await getLocalData();
@@ -10,7 +11,6 @@ export const EventCard = async () => {
   const objectDataList = await Promise.all(
     localData.map(async (event) => {
       const artworkId = event.artworkIds[0];
-      const eventId = await fetch("http://localhost:8080/events")
       const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
       const data = await res.json();
       return {
@@ -22,7 +22,7 @@ export const EventCard = async () => {
 
   return (
     <ClerkProvider>
-      <SignedOut>
+      <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
           {objectDataList.map(({ event, objectData }) => {
             const imageUrl = objectData.image_thumbnail;
@@ -51,7 +51,9 @@ export const EventCard = async () => {
                   <div className="flex flex-col justify-between w-full leading-none">
                     <div className="flex flex-row justify-between items-end">
                       <h1 className="font-medium text-3xl">{event.title}</h1>
-                      <PopoverWrapper curator={event.curator} />
+                      <Link href={`/slug/${event.id}`}>
+                        <Kuratoredit />
+                      </Link>
                     </div>
                     <p className="mb-4 font-thin text-xl">{event.curator}</p>
                     <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">
@@ -67,7 +69,7 @@ export const EventCard = async () => {
             );
           })}
         </section>
-      </SignedOut>
+      </SignedIn>
     </ClerkProvider>
   );
 };
