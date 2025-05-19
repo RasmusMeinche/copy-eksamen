@@ -1,8 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import Kuratoredit from './Kuratoredit';
+import Kuratoredit from '../../Kuratoredit';
 import { getLocalData } from '@/lib/local';
 
-export default async function SimpleDialog() {
+export default async function SimpleDialog( ) {
   const data = await getLocalData();
 
   return (

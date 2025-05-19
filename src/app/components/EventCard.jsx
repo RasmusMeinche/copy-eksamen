@@ -2,7 +2,7 @@ import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import Button from "./Button";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
-import PopoverWrapper from "./PopOver";
+import PopoverWrapper from "./slug/[id]/PopOver";
 
 export const EventCard = async () => {
   const localData = await getLocalData();
@@ -10,6 +10,7 @@ export const EventCard = async () => {
   const objectDataList = await Promise.all(
     localData.map(async (event) => {
       const artworkId = event.artworkIds[0];
+      const eventId = await fetch("http://localhost:8080/events")
       const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
       const data = await res.json();
       return {
