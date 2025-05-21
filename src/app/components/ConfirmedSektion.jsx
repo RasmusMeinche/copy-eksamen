@@ -14,7 +14,7 @@ const ConfirmedSektion = () => {
 
   if (!bookingData) return <p className="text-white">Indlæser...</p>;
 
-  const { title, event, tickets } = bookingData;
+  const { event, tickets } = bookingData;
 
   return (
     <section>
