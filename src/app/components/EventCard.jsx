@@ -15,7 +15,7 @@ export const EventCard = async () => {
       const data = await res.json();
       return {
         event,
-        objectData: data.items?.[0], // Henter det første kunstværk, hvis flere findes
+        objectData: data.items?.[0],
       };
     })
   );
