@@ -33,7 +33,7 @@ const Header = ({ title, bgColor = "#800000" }) => {
         <div className="w-auto min-w-[300px]">
           <div className="relative">
             <input
-              className="w-full bg-transparent placeholder:text-white focus:placeholder-transparent text-white text-sm border-2 border-slate-200 rounded-md pl-3 pr-12 py-2 transition duration-300 ease focus:outline-none shadow-sm"
+              className="w-full bg-transparent placeholder:text-white focus:placeholder-transparent text-white text-sm border-2 border-slate-200 pl-3 pr-12 py-2 transition duration-300 ease focus:outline-none shadow-sm"
               placeholder="Søg i events og værker..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
