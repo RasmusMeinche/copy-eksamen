@@ -12,7 +12,7 @@ export default async function EventSingleView({ params }) {
 
   if (!event) return notFound();
 
-  const objectDataList = await Promise.all(
+  const arts = await Promise.all(
     event.artworkIds.map(async (artworkId) => {
       const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
       const data = await res.json();
@@ -72,10 +72,10 @@ export default async function EventSingleView({ params }) {
             <h1 className="text-4xl">| Værker</h1>
           </div>
           <div className="w-1/2 flex flex-wrap gap-4">
-            {objectDataList.map((objectData, index) => {
-              const imageUrl = objectData?.image_thumbnail;
+            {arts.map((art, index) => {
+              const imageUrl = art?.image_thumbnail;
               return imageUrl ? (
-                <Link href={`/singleview/${objectData.object_number}`} key={index}>
+                <Link href={`/singleview/${art.object_number}`} key={index}>
                 <Image
                   key={index}
                   src={imageUrl}
