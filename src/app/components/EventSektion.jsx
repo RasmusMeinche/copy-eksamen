@@ -4,15 +4,31 @@ const EventSektion = ({ event }) => {
   const isSoldOut = availableTickets <= 0;
 
   return (
-    <div className="text-white mb-4">
-      <h2 className="text-2xl font-bold">{title}</h2>
-      <p className="mt-1">
-        Lokation: {location?.name}, {location?.address}
-      </p>
-      <p className="mt-1">Dato: {new Date(date).toLocaleDateString("da-DK")}</p>
-      <p className="mt-1">
-        {isSoldOut ? "Udsolgt" : `Billetter tilgængelige: ${availableTickets}`}
-      </p>
+    <div className="text-white mb-4 flex flex-col gap-6">
+      <h2 className="text-2xl font-bold mb-2">{title}</h2>
+      <div className="flex flex-col gap-6">
+        <p>
+          <strong>Lokation:</strong>
+          <br />
+          {location?.name}, {location?.address}
+        </p>
+        <p>
+          <strong>Dato:</strong>
+          <br />
+          {new Date(date).toLocaleDateString("da-DK")}
+        </p>
+        <p>
+          {isSoldOut ? (
+            <strong>Udsolgt</strong>
+          ) : (
+            <>
+              <strong>Billetter tilgængelige:</strong>
+              <br />
+              {availableTickets}x
+            </>
+          )}
+        </p>
+      </div>
     </div>
   );
 };
