@@ -1,5 +1,5 @@
 "use client";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getLocalData } from "@/lib/local";
 import EventSektion from "../components/EventSektion";
 import FormSektion from "../components/FormSektion";
