@@ -27,7 +27,7 @@ export default function Home() {
       const allEvents = await getLocalData("events");
 
       // Midlertidigt hardcoded ID til udvikling
-      const fallbackEventId = "ff1b81f7-06ba-4c4b-96ca-a02a4e196bdb";
+      const fallbackEventId = "e8609e62-2c96-462d-bbcc-cfc2c3952a25";
 
       const selectedEvent = allEvents.find(
         (e) => e.id === (eventIdFromParams || fallbackEventId)

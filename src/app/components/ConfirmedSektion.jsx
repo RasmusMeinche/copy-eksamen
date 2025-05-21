@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 const ConfirmedSektion = () => {
   const [bookingData, setBookingData] = useState(null);
@@ -13,7 +14,7 @@ const ConfirmedSektion = () => {
 
   if (!bookingData) return <p className="text-white">Indlæser...</p>;
 
-  const { event, tickets } = bookingData;
+  const { title, event, tickets } = bookingData;
 
   return (
     <section>
@@ -23,6 +24,18 @@ const ConfirmedSektion = () => {
             <h2 className="text-white text-xl">Produkt:</h2>
           </div>
           <div>
+            <div className="flex flex-col pb-4">
+              <h2 className="text-white text-2xl font-bold mb-2">
+                {event.title}
+              </h2>
+              <Image
+                src={`https://iip-thumb.smk.dk/iiif/jp2/1z40kx99j_${event.artworkIds[0]}.tif.jp2/full/!1024,/0/default.jpg`}
+                alt="Event Image"
+                width={300}
+                height={300}
+                className="bg-amber-50 h-full object-cover"
+              />
+            </div>
             <p className="text-white text-lg">
               <strong>Lokation:</strong>
               <br />
