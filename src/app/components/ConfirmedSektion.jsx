@@ -20,11 +20,8 @@ const ConfirmedSektion = () => {
     <section>
       <div className="mt-4 flex justify-between items-stretch">
         <div className="flex gap-6">
-          <div>
-            <h2 className="text-white text-xl">Produkt:</h2>
-          </div>
-          <div>
-            <div className="flex flex-col pb-4">
+          <div className="flex gap-6 items-stretch">
+            <div className="flex flex-col">
               <h2 className="text-white text-2xl font-bold mb-2">
                 {event.title}
               </h2>
@@ -33,26 +30,28 @@ const ConfirmedSektion = () => {
                 alt="Event Image"
                 width={300}
                 height={300}
-                className="bg-amber-50 h-full object-cover"
+                className="bg-amber-50 object-cover"
               />
             </div>
-            <p className="text-white text-lg">
-              <strong>Lokation:</strong>
-              <br />
-              {event.location?.address}
-            </p>
-            <p className="mt-2 text-white text-lg">
-              <strong>Dato:</strong>
-              <br />
-              {new Date(event.date).toLocaleDateString("da-DK", {
-                day: "2-digit",
-                month: "long",
-                year: "numeric",
-              })}
-            </p>
+            <div className="flex flex-col justify-end gap-6">
+              <p className="text-white text-lg">
+                <strong>Lokation:</strong>
+                <br />
+                {event.location?.address}
+              </p>
+              <p className="text-white text-lg">
+                <strong>Dato:</strong>
+                <br />
+                {new Date(event.date).toLocaleDateString("da-DK", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col justify-end">
+        <div className="flex flex-col justify-end items-center gap-6">
           <p className="text-white text-lg">
             <strong>Antal Billetter:</strong>
             <br />
