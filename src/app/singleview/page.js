@@ -73,7 +73,7 @@ import Footer from "@/app/components/Footer";
                 <h1 className="text-4xl">| Teknik og Farver</h1>
               </div>
               <div className="w-1/2">
-                <p>Teknik - {art.techniques || "N/A"}</p>
+                <p><strong>Teknik:</strong> {art.techniques || "N/A"}</p>
                 <div className="flex flex-wrap pt-5 gap-2.5 max-w-[17.5rem]">
                   {art.colors?.filter(Boolean).map((hex) => (
                 <div

@@ -3,9 +3,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
+import Link from "next/link";
 
 const Header = ({ title, bgColor = "#800000" }) => {
-  // Standard header farve heroppe guys
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -16,35 +16,37 @@ const Header = ({ title, bgColor = "#800000" }) => {
   return (
     <section
       className="relative flex justify-between items-center text-white p-4 px-8"
-      style={{ backgroundColor: bgColor }} // Header farve på singleview sider og eventuelt events?
+      style={{ backgroundColor: bgColor }}
     >
       <div className="flex items-center gap-4">
-        <Image
-          src="/img/SMK_MiniLogo_White.png"
-          alt="Logo"
-          width={240}
-          height={82}
-        />
+        <Link href="/">
+          <Image
+            src="/img/SMK_MiniLogo_White.png"
+            alt="Logo"
+            width={240}
+            height={82}
+          />
+        </Link>
         <h1 className="text-8xl font-thin">{title}</h1>
       </div>
-
-      <div className="flex items-center gap-6 relative">
-        <div className="relative">
-          <IoSearchOutline
-            className="cursor-pointer scale-150"
-            onClick={toggleSearch}
-          />
-          {showSearch && (
+      <div className="flex items-center gap-6">
+        <div className="w-auto min-w-[300px]">
+          <div className="relative">
             <input
-              type="text"
-              className="absolute right-full mr-2 top-1/2 -translate-y-1/2 p-1 text-white"
-              placeholder="Søg..."
+              className="w-full bg-transparent placeholder:text-white focus:placeholder-transparent text-white text-sm border-2 border-slate-200 rounded-md pl-3 pr-12 py-2 transition duration-300 ease focus:outline-none shadow-sm"
+              placeholder="Søg i events og værker..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-          )}
+            <button
+              type="button"
+              className="absolute top-1 right-1 bottom-1 w-10 flex items-center justify-center rounded text-white text-sm hover:scale-105"
+              onClick={toggleSearch}
+            >
+              <IoSearchOutline className="scale-150" />
+            </button>
+          </div>
         </div>
-
         <HiOutlineShoppingBag className="scale-150" />
       </div>
     </section>
