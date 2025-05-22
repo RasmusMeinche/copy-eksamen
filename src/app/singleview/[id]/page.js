@@ -1,4 +1,3 @@
-import { getData } from "@/lib/smk";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import { getArtworkById } from "@/lib/smk";
@@ -15,12 +14,12 @@ import { getArtworkById } from "@/lib/smk";
 
   return (
    <section>
-  <div key={art.id} style={{ backgroundColor: art.suggested_bg_color }}>
-    <Header bgColor={art.suggested_bg_color} />
-    <div
-      className="flex pt-10 px-12 pb-10 gap-10"
-      style={{ backgroundColor: art.suggested_bg_color }}
-    >
+    <div key={art.id} style={{ backgroundColor: art.suggested_bg_color }}>
+      <Header bgColor={art.suggested_bg_color} />
+      <div
+        className="flex pt-10 px-12 pb-10 gap-10"
+        style={{ backgroundColor: art.suggested_bg_color }}
+      >
       <img className="w-[750px] shadow-xl/50" src={art.image_thumbnail} />
       <div className="flex flex-col p-5">
         <h1 className="font-bold text-3xl text-white">{art.titles?.[0]?.title}</h1>
