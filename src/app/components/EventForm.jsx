@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Button from "./Button";
 
 export default function EventForm({ event }) {
   const [eventInfo, setEventInfo] = useState({
@@ -12,6 +13,10 @@ export default function EventForm({ event }) {
 
   function handleTitleChange(e) {
     setEventInfo((prev) => ({ ...prev, title: e.target.value }));
+
+    fetch("localhost:8080/events", 
+        {method: "PATCH",
+         body: JSON.stringify(eventInfo)})
   }
   function handleCuratorChange(e) {
     setEventInfo((prev) => ({ ...prev, curator: e.target.value }));
@@ -25,7 +30,7 @@ export default function EventForm({ event }) {
 
   return (
     <form className="flex flex-col shadow-md p-4 h-[600px]" action="">
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
           className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
@@ -66,6 +71,10 @@ export default function EventForm({ event }) {
           value={eventInfo.description}
           onChange={handleDescriptionChange}
         />
+        <div className="flex justify-between place-items-end">
+            <Button title="Opret Event" />
+            <button>Slet Event</button>
+        </div>
       </div>
     </form>
   );
