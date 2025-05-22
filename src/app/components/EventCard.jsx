@@ -22,7 +22,7 @@ export const EventCard = async () => {
 
   return (
     <ClerkProvider>
-      <SignedOut>
+      <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
           {objectDataList.map(({ event, objectData }) => {
             const imageUrl = objectData.image_thumbnail;
@@ -71,7 +71,7 @@ export const EventCard = async () => {
             );
           })}
         </section>
-      </SignedOut>
+      </SignedIn>
     </ClerkProvider>
   );
 };
