@@ -21,7 +21,7 @@ export default async function EventSingleView({ params }) {
   );
 
   return (
-    <div className="bg-blue-300">
+    <div className="bg-[#800000]">
       <Header />
       <div className="h-screen text-white">
         <div className="px-[10%] py-[10%] mt-[5%] border-b-6 border-t-6 border-r-6 w-[60%]">
@@ -38,10 +38,10 @@ export default async function EventSingleView({ params }) {
         </div>
       </div>
 
-      <div className="flex flex-col px-50 pb-50 pt-20 text-black">
+      <div className="flex flex-col px-50 pb-50 pt-20 text-white">
         <div className="flex flex-row p-5">
           <div className="w-1/2">
-            <h1 className="text-4xl">| Om eventet</h1>
+            <h1 className="text-4xl">Om eventet:</h1>
           </div>
           <div className="w-1/2">
             <p>{event.description}</p>
@@ -50,7 +50,7 @@ export default async function EventSingleView({ params }) {
 
         <div className="flex flex-row p-5">
           <div className="w-1/2">
-            <h1 className="text-4xl">| Lokation</h1>
+            <h1 className="text-4xl">Lokation:</h1>
           </div>
           <div className="w-1/2">
             <p>{event.location.name}</p>
@@ -60,7 +60,7 @@ export default async function EventSingleView({ params }) {
 
         <div className="flex flex-row p-5">
           <div className="w-1/2">
-            <h1 className="text-4xl">| Tid og Dato</h1>
+            <h1 className="text-4xl">Tid og Dato:</h1>
           </div>
           <div className="w-1/2">
             <p>{event.date}</p>
@@ -69,7 +69,7 @@ export default async function EventSingleView({ params }) {
 
         <div className="flex flex-row p-5">
           <div className="w-1/2">
-            <h1 className="text-4xl">| Værker</h1>
+            <h1 className="text-4xl">Værker:</h1>
           </div>
           <div className="w-1/2 flex flex-wrap gap-4">
             {arts.map((art, index) => {

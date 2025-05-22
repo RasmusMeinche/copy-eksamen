@@ -29,8 +29,8 @@ import { getArtworkById } from "@/lib/smk";
 
     <div className="flex flex-col px-50 pb-50 pt-20 text-white">
       <div className="flex flex-row p-5">
-        <div className="w-1/2">
-          <h1 className="text-4xl">| Kunstner</h1>
+        <div className="w-1/2 pb-[10%]">
+          <h1 className="text-4xl">Kunstner:</h1>
         </div>
         <div className="w-1/2 flex flex-row gap-20">
           <div>
@@ -52,8 +52,8 @@ import { getArtworkById } from "@/lib/smk";
       </div>
 
       <div className="flex flex-row p-5">
-        <div className="w-1/2">
-          <h1 className="text-4xl">| Om værket</h1>
+        <div className="w-1/2 pb-[10%]">
+          <h1 className="text-4xl">Om værket:</h1>
         </div>
         <div className="w-1/2">
           <p className="leading-loose">{art.labels?.[0]?.text || "N/A"}</p>
@@ -62,14 +62,17 @@ import { getArtworkById } from "@/lib/smk";
 
       <div className="flex flex-row p-5">
         <div className="w-1/2">
-          <h1 className="text-4xl">| Teknik og Farver</h1>
+          <h1 className="text-4xl">Teknik og Farver:</h1>
         </div>
         <div className="w-1/2">
-          <p>
+          <p className="pb-5">
             <strong>Teknik:</strong> {art.techniques || "N/A"}
           </p>
-          <div className="flex flex-wrap pt-5 gap-2.5 max-w-[17.5rem]">
-            {art.colors?.filter(Boolean).map((hex) => (
+          <p>
+            <strong>Farver:</strong>
+          </p>
+          <div className="flex flex-wrap pt-5 gap-2.5 max-w-[25rem]">
+            {art.colors?.map((hex) => (
               <div
                 key={hex}
                 className="w-12 h-12 rounded-full flex-shrink-0 shadow-xl/30"
