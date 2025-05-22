@@ -14,7 +14,9 @@ export default async function EventSingleView({ params }) {
 
   const arts = await Promise.all(
     event.artworkIds.map(async (artworkId) => {
-      const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
+      const res = await fetch(
+        `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
+      );
       const data = await res.json();
       return data.items?.[0];
     })
@@ -27,12 +29,14 @@ export default async function EventSingleView({ params }) {
         <div className="px-[10%] py-[10%] mt-[5%] border-b-6 border-t-6 border-r-6 w-[60%]">
           <h1 className="text-5xl font-medium">{event.title}</h1>
           <h2 className="text-4xl font-thin pb-15">Periode</h2>
-          <Link href="/checkout">
+          <Link href={`/checkout?id=${event.id}`}>
             <button
               type="submit"
               className="relative border border-white px-4 py-5 w-40 h-14 hover:bg-white hover:text-[#800000]"
             >
-              <span className="absolute bottom-2 left-2 text-left">Book Billetter</span>
+              <span className="absolute bottom-2 left-2 text-left">
+                Book Billetter
+              </span>
             </button>
           </Link>
         </div>
@@ -75,15 +79,18 @@ export default async function EventSingleView({ params }) {
             {arts.map((art, index) => {
               const imageUrl = art?.image_thumbnail;
               return imageUrl ? (
-                <Link href={`/singleview/${art.object_number}`} key={index}>
-                <Image
+                <Link
+                  href={`/singleview/${art.object_number}`}
                   key={index}
-                  src={imageUrl}
-                  alt="Event Artwork"
-                  width={300}
-                  height={300}
-                  className="bg-amber-50 h-full max-h-[220px] object-cover"
-                />
+                >
+                  <Image
+                    key={index}
+                    src={imageUrl}
+                    alt="Event Artwork"
+                    width={300}
+                    height={300}
+                    className="bg-amber-50 h-full max-h-[220px] object-cover"
+                  />
                 </Link>
               ) : (
                 <div

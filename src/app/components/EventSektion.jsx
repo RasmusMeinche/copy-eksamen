@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const EventSektion = ({ event }) => {
@@ -5,17 +7,39 @@ const EventSektion = ({ event }) => {
   const availableTickets = totalTickets - bookedTickets;
   const isSoldOut = availableTickets <= 0;
 
+  const [imageUrl, setImageUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      const artworkId = event.artworkIds[0];
+      const res = await fetch(
+        `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
+      );
+      const smkData = await res.json();
+      const img = smkData.items?.[0]?.image_thumbnail;
+      setImageUrl(img);
+    };
+
+    fetchImage();
+  }, [event.artworkIds]);
+
   return (
     <div className="text-white mb-4 flex flex-col gap-6">
       <div className="flex flex-col">
         <h2 className="text-2xl font-bold mb-2">{title}</h2>
-        <Image
-          src={`https://iip-thumb.smk.dk/iiif/jp2/1z40kx99j_${event.artworkIds[0]}.tif.jp2/full/!1024,/0/default.jpg`}
-          alt="Event Image"
-          width={300}
-          height={300}
-          className="bg-amber-50 h-full object-cover"
-        />
+        {imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt="Event Image"
+            width={300}
+            height={300}
+            className="bg-amber-50 h-full object-cover"
+          />
+        ) : (
+          <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
+            No Image
+          </div>
+        )}
       </div>
       <div className="flex flex-col gap-6">
         <p>
