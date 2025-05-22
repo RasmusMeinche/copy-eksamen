@@ -37,6 +37,7 @@ export default async function Singleview({ params }) {
             </h2>
           </div>
         </div>
+      </div>
 
       <div className="flex flex-row p-5">
         <div className="w-1/2 pb-[10%]">
