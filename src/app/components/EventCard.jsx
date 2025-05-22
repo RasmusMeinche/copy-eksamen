@@ -4,6 +4,7 @@ import Button from "./Button";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import Kuratoredit from "./Kuratoredit";
+import CreateEvent from "./CreateEvent";
 
 export const EventCard = async () => {
   const localData = await getLocalData();
@@ -22,8 +23,11 @@ export const EventCard = async () => {
 
   return (
     <ClerkProvider>
-      <SignedOut>
+      <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
+          <div className="flex col-start-2 justify-center mb-16 mt-16">
+            <button onClick={CreateEvent} className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer">Opret Event</button>
+          </div>
           {objectDataList.map(({ event, objectData }) => {
             const imageUrl = objectData.image_thumbnail;
 
@@ -69,7 +73,7 @@ export const EventCard = async () => {
             );
           })}
         </section>
-      </SignedOut>
+      </SignedIn>
     </ClerkProvider>
   );
 };
