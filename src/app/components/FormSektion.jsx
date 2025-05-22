@@ -7,7 +7,6 @@ const FormSektion = ({ event }) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   const router = useRouter();
@@ -22,18 +21,29 @@ const FormSektion = ({ event }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:8080/bookings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          eventId: event.id,
-          name: data.name,
-          email: data.email,
-          tickets: parseInt(data.tickets),
-        }),
-      });
+      const response = await fetch(
+        `http://localhost:8080/events/${event.id}/book`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            eventId: event.id,
+            tickets: parseInt(data.tickets),
+          }),
+        }
+      );
+
+      console.log("Status:", response.status);
 
       if (!response.ok) throw new Error("Fejl ved booking");
+
+      localStorage.setItem(
+        "bookingConfirmation",
+        JSON.stringify({
+          event: event,
+          tickets: parseInt(data.tickets),
+        })
+      );
 
       router.push("/booking-bekraeftelse");
     } catch (err) {
@@ -95,7 +105,7 @@ const FormSektion = ({ event }) => {
 
       <button
         type="submit"
-        className="bg-white text-black px-4 py-2 font-bold"
+        className="bg-white text-black px-4 py-2 font-bold cursor-pointer"
       >
         Bekræft booking
       </button>
