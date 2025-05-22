@@ -26,7 +26,6 @@ export default async function Singleview({ params }) {
           <img
             className="w-[750px] shadow-xl/50"
             src={art.image_thumbnail}
-            alt="img"
           />
           <div className="flex flex-col p-5">
             <h1 className="font-bold text-3xl text-white">
@@ -37,36 +36,64 @@ export default async function Singleview({ params }) {
             </h2>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-row p-5">
-        <div className="w-1/2 pb-[10%]">
-          <h1 className="text-4xl">Om værket:</h1>
-        </div>
-        <div className="w-1/2">
-          <p className="leading-loose">{art.labels?.[0]?.text || "N/A"}</p>
-        </div>
-      </div>
+        <div className="flex flex-col px-50 pb-50 pt-20 text-white">
+          <div className="flex flex-row p-5">
+            <div className="w-1/2 pb-[10%]">
+              <h1 className="text-4xl">Kunstner:</h1>
+            </div>
+            <div className="w-1/2 flex flex-row gap-20">
+              <div>
+                <p className="font-bold text-2xl pb-3">Navn</p>
+                <p>{art.artist || "N/A"}</p>
+              </div>
+              <div>
+                <p className="font-bold text-2xl pb-3">Nationalitet</p>
+                <p>{art.production?.[0]?.creator_nationality || "N/A"}</p>
+              </div>
+              <div>
+                <p className="font-bold text-2xl pb-3">Levetid</p>
+                <p>
+                  {art.production?.[0]?.creator_date_of_birth?.slice(0, 4) ||
+                    "N/A"}{" "}
+                  -{" "}
+                  {art.production?.[0]?.creator_date_of_death?.slice(0, 4) ||
+                    "N/A"}
+                </p>
+              </div>
+            </div>
+          </div>
 
-      <div className="flex flex-row p-5">
-        <div className="w-1/2">
-          <h1 className="text-4xl">Teknik og Farver:</h1>
-        </div>
-        <div className="w-1/2">
-          <p className="pb-5">
-            <strong>Teknik:</strong> {art.techniques || "N/A"}
-          </p>
-          <p>
-            <strong>Farver:</strong>
-          </p>
-          <div className="flex flex-wrap pt-5 gap-2.5 max-w-[25rem]">
-            {art.colors?.map((hex) => (
-              <div
-                key={hex}
-                className="w-12 h-12 rounded-full flex-shrink-0 shadow-xl/30"
-                style={{ backgroundColor: hex }}
-              />
-            ))}
+          <div className="flex flex-row p-5">
+            <div className="w-1/2 pb-[10%]">
+              <h1 className="text-4xl">Om værket:</h1>
+            </div>
+            <div className="w-1/2">
+              <p className="leading-loose">{art.labels?.[0]?.text || "N/A"}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-row p-5">
+            <div className="w-1/2">
+              <h1 className="text-4xl">Teknik og Farver:</h1>
+            </div>
+            <div className="w-1/2">
+              <p className="pb-5">
+                <strong>Teknik:</strong> {art.techniques || "N/A"}
+              </p>
+              <p>
+                <strong>Farver:</strong>
+              </p>
+              <div className="flex flex-wrap pt-5 gap-2.5 max-w-[25rem]">
+                {art.colors?.map((hex) => (
+                  <div
+                    key={hex}
+                    className="w-12 h-12 rounded-full flex-shrink-0 shadow-xl/30"
+                    style={{ backgroundColor: hex }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
         <Footer />
