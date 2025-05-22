@@ -1,31 +1,53 @@
+"use client";
+import { useEffect, useState } from "react";
 import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import Button from "./Button";
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import { ClerkProvider, SignedIn } from "@clerk/nextjs";
 import Link from "next/link";
 import Kuratoredit from "./Kuratoredit";
 
-export const EventCard = async () => {
-  const localData = await getLocalData();
+export const EventCard = ({ searchQuery = "" }) => {
+  const [objectDataList, setObjectDataList] = useState([]);
 
-  const objectDataList = await Promise.all(
-    localData.map(async (event) => {
-      const artworkId = event.artworkIds[0];
-      const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
-      const data = await res.json();
-      return {
-        event,
-        objectData: data.items?.[0],
-      };
-    })
-  );
+  useEffect(() => {
+    const fetchData = async () => {
+      const localData = await getLocalData();
+      const eventsWithArtwork = await Promise.all(
+        localData.map(async (event) => {
+          const artworkId = event.artworkIds[0];
+          const res = await fetch(
+            `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
+          );
+          const data = await res.json();
+          return {
+            event,
+            objectData: data.items?.[0],
+          };
+        })
+      );
+      setObjectDataList(eventsWithArtwork);
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredData = objectDataList.filter(({ event, objectData }) => {
+    const lowerQuery = searchQuery.toLowerCase();
+    return (
+      event.title.toLowerCase().includes(lowerQuery) ||
+      event.curator.toLowerCase().includes(lowerQuery) ||
+      event.description.toLowerCase().includes(lowerQuery) ||
+      (objectData?.title?.toLowerCase().includes(lowerQuery) ?? false)
+    );
+  });
 
   return (
     <ClerkProvider>
       <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
-          {objectDataList.map(({ event, objectData }) => {
-            const imageUrl = objectData.image_thumbnail;
+          {filteredData.map(({ event, objectData }) => {
+            const imageUrl = objectData?.image_thumbnail;
 
             return (
               <div

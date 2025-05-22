@@ -1,17 +1,14 @@
 "use client";
-import { useState } from "react";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
 
-const Header = ({ title, bgColor = "#800000" }) => {
-  const [showSearch, setShowSearch] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const toggleSearch = () => {
-    setShowSearch(!showSearch);
-  };
-
+const Header = ({
+  title,
+  bgColor = "#800000",
+  searchQuery,
+  setSearchQuery,
+}) => {
   return (
     <section
       className="relative flex justify-between items-center text-white p-4 px-8"
@@ -40,7 +37,6 @@ const Header = ({ title, bgColor = "#800000" }) => {
             <button
               type="button"
               className="absolute top-1 right-1 bottom-1 w-10 flex items-center justify-center rounded text-white text-sm hover:scale-105"
-              onClick={toggleSearch}
             >
               <IoSearchOutline className="scale-150" />
             </button>

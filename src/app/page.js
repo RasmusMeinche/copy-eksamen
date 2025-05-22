@@ -1,12 +1,19 @@
+"use client";
+import { useState } from "react";
+import { EventCard } from "./components/EventCard";
 import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Eventliste from "./eventliste/Eventliste";
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   return (
     <section>
-      <Header title="EVENTS" />
-      <Eventliste />
+      <Header
+        title="EVENTS"
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
+      <EventCard searchQuery={searchQuery} />
     </section>
   );
 }
