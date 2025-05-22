@@ -24,7 +24,7 @@ export default async function EventSingleView({ params }) {
 
   return (
     <div className="bg-[#800000]">
-      <Header />
+      <Header title="EVENTS" />
       <div className="h-screen text-white">
         <div className="px-[10%] py-[10%] mt-[5%] border-b-6 border-t-6 border-r-6 w-[60%]">
           <h1 className="text-5xl font-medium">{event.title}</h1>
@@ -104,7 +104,6 @@ export default async function EventSingleView({ params }) {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

@@ -18,7 +18,10 @@ export default async function Singleview({ params }) {
         key={art.id}
         style={{ backgroundColor: art.suggested_bg_color }}
       >
-        <Header bgColor={art.suggested_bg_color} />
+        <Header
+          title="EVENTS"
+          bgColor={art.suggested_bg_color}
+        />
         <div
           className="flex pt-10 px-12 pb-10 gap-10"
           style={{ backgroundColor: art.suggested_bg_color }}
@@ -96,7 +99,6 @@ export default async function Singleview({ params }) {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     </section>
   );
