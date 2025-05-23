@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Button from "./Button";
 
 export default function EventForm({ event }) {
   const [eventInfo, setEventInfo] = useState({
@@ -11,12 +10,9 @@ export default function EventForm({ event }) {
     description: event.description,
   });
 
+  // Input change handlers
   function handleTitleChange(e) {
     setEventInfo((prev) => ({ ...prev, title: e.target.value }));
-
-    fetch("localhost:8080/events", 
-        {method: "PATCH",
-         body: JSON.stringify(eventInfo)})
   }
   function handleCuratorChange(e) {
     setEventInfo((prev) => ({ ...prev, curator: e.target.value }));
@@ -28,8 +24,34 @@ export default function EventForm({ event }) {
     setEventInfo((prev) => ({ ...prev, description: e.target.value }));
   }
 
+  // Handle PATCH request
+  async function handleUpdate(e) {
+    e.preventDefault(); // prevent page reload
+    try {
+      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventInfo),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update event");
+      }
+
+      const updatedEvent = await response.json();
+      alert("Event opdateret!");
+      console.log("Updated event:", updatedEvent);
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Noget gik galt under opdateringen.");
+    }
+  }
+
   return (
-    <form className="flex flex-col shadow-md p-4 h-[600px]" action="">
+    <form className="flex flex-col shadow-md p-4 h-full" onSubmit={handleUpdate}>
+      {/* Input fields, unchanged */}
       <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
@@ -66,15 +88,26 @@ export default function EventForm({ event }) {
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
         <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">Beskrivelse:</label>
         <textarea
-          className="text-white bg-gray-300 px-4 py-2 flex-1 resize-none"
+          className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
           value={eventInfo.description}
           onChange={handleDescriptionChange}
         />
-        <div className="flex justify-between place-items-end">
-            <Button title="Opret Event" />
-            <button>Slet Event</button>
-        </div>
+      </div>
+
+      <div className="flex justify-center p-4 gap-20">
+        <button
+          type="button"
+          className="bg-[#800000] text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+        >
+          Slet Event
+        </button>
+        <button
+          type="submit"
+          className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000]  hover:bg-[#800000] hover:text-white cursor-pointer"
+        >
+          Opret Event
+        </button>
       </div>
     </form>
   );
