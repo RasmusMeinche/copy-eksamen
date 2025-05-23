@@ -1,7 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
-import { ClerkProvider } from '@clerk/nextjs';import { Roboto, Lora } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { Roboto, Lora } from "next/font/google";
+import Footer from "./components/Footer";
 
 const robotoCondensed = Roboto_Condensed({
   subsets: ["latin"],
@@ -27,9 +29,15 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-       <html lang="da" className={robotoCondensed.variable}>
-      <body className="font-roboto-condensed">{children}</body>
-    </html>
+      <html
+        lang="da"
+        className={robotoCondensed.variable}
+      >
+        <body className="font-roboto-condensed">
+          {children}
+          <Footer />
+        </body>
+      </html>
     </ClerkProvider>
   );
 }

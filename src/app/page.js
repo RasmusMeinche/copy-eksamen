@@ -5,9 +5,8 @@ import Eventliste from "./eventliste/Eventliste";
 export default function Home() {
   return (
     <section>
-      <Header />
+      <Header title="EVENTS" />
       <Eventliste />
-      <Footer />
     </section>
   );
 }

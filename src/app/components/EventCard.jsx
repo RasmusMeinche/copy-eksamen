@@ -65,7 +65,9 @@ export const EventCard = async () => {
                     </p>
                     <div className="flex flex-row justify-between items-end">
                       <p className="font-extralight text-2xl">{event.date}</p>
-                      <Button title="Læs Mere" />
+                      <Link href={`/eventsingleview/${event.id}`}>
+                        <Button title="Læs mere" />
+                      </Link>
                     </div>
                   </div>
                 </div>
