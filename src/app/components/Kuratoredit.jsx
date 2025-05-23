@@ -1,9 +1,14 @@
-import { GoPencil } from "react-icons/go";
-import { IoMdClose } from "react-icons/io";
+import { forwardRef } from 'react';
+import { GoPencil } from 'react-icons/go';
+import { IoMdClose } from 'react-icons/io';
 
-const Kuratoredit = ({ variant = "edit" }) => {
+const Kuratoredit = forwardRef(({ variant = "edit", ...props }, ref) => {
   return (
-    <button className="group flex items-center gap-2 px-4 py-2 border bg-white cursor-pointer text-[#800000] hover:border-2 border-white hover:bg-[#800000] hover:text-white transition">
+    <button
+      ref={ref}
+      {...props}
+      className="group flex items-center gap-2 px-4 py-2 border bg-white cursor-pointer text-[#800000] hover:border-2 border-white hover:bg-[#800000] hover:text-white transition"
+    >
       {variant === "edit" ? (
         <GoPencil className="text-lg text-[#800000] group-hover:text-white transition" />
       ) : (
@@ -11,6 +16,8 @@ const Kuratoredit = ({ variant = "edit" }) => {
       )}
     </button>
   );
-};
+});
+
+Kuratoredit.displayName = 'Kuratoredit';
 
 export default Kuratoredit;
