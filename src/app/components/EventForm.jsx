@@ -117,7 +117,7 @@ export default function EventForm({ event }) {
           className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
           type="text"
           id="dato"
-          value={eventInfo.location.map((location) => location.name)}
+          value={eventInfo.location.name + " - " + eventInfo.location.address}
           onChange={handleLocationChange}
         />
       </div>
