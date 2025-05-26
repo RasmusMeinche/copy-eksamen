@@ -2,7 +2,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
-import { HiOutlineShoppingBag } from "react-icons/hi2";
 import Link from "next/link";
 
 const Header = ({ title, bgColor = "#800000" }) => {
@@ -47,7 +46,6 @@ const Header = ({ title, bgColor = "#800000" }) => {
             </button>
           </div>
         </div>
-        <HiOutlineShoppingBag className="scale-150" />
       </div>
     </section>
   );

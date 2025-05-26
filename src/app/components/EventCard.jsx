@@ -1,31 +1,61 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import Button from "./Button";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import Kuratoredit from "./Kuratoredit";
+import CreateEvent from "./CreateEvent";
 
-export const EventCard = async () => {
-  const localData = await getLocalData();
+export default function EventCard() {
+  const [showForm, setShowForm] = useState(false);
+  const [events, setEvents] = useState([]);
 
-  const objectDataList = await Promise.all(
-    localData.map(async (event) => {
-      const artworkId = event.artworkIds[0];
-      const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
-      const data = await res.json();
-      return {
-        event,
-        objectData: data.items?.[0],
-      };
-    })
-  );
+  useEffect(() => {
+    async function fetchData() {
+      const localData = await getLocalData();
+
+      const objectDataList = await Promise.all(
+        localData.map(async (event) => {
+          const artworkId = event.artworkIds[0];
+          const res = await fetch(`https://api.smk.dk/api/v1/art?object_number=${artworkId}`);
+          const data = await res.json();
+          return {
+            event,
+            objectData: data.items?.[0],
+          };
+        })
+      );
+
+      setEvents(objectDataList);
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <ClerkProvider>
       <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
-          {objectDataList.map(({ event, objectData }) => {
-            const imageUrl = objectData.image_thumbnail;
+          <div className="flex col-start-2 justify-center mb-16 mt-16">
+            <button
+              onClick={() => setShowForm(true)}
+              className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+            >
+              Opret Event
+            </button>
+          </div>
+
+          {showForm && (
+            <div className="col-start-2 w-full">
+              <CreateEvent onCancel={() => setShowForm(false)} />
+            </div>
+          )}
+
+          {events.map(({ event, objectData }) => {
+            const imageUrl = objectData?.image_thumbnail;
 
             return (
               <div
@@ -74,4 +104,4 @@ export const EventCard = async () => {
       </SignedIn>
     </ClerkProvider>
   );
-};
+}
