@@ -1,6 +1,6 @@
-import Header from "@/app/components/Header";
-import Footer from "@/app/components/Footer";
-import { getArtworkById } from "@/lib/smk";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import { getArtworkById } from "../../../lib/smk";
 
 //////////////////////////////////////////////////////////////////////////////
 
