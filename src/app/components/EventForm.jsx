@@ -7,8 +7,11 @@ export default function EventForm({ event }) {
     title: event.title,
     curator: event.curator,
     date: event.date,
+    location: event.location,
     description: event.description,
   });
+
+  console.log("det her er lokationen", event.location)
 
   // Input change handlers
   function handleTitleChange(e) {
@@ -20,13 +23,16 @@ export default function EventForm({ event }) {
   function handleDateChange(e) {
     setEventInfo((prev) => ({ ...prev, date: e.target.value }));
   }
+  function handleLocationChange(e) {
+    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
+  }
   function handleDescriptionChange(e) {
     setEventInfo((prev) => ({ ...prev, description: e.target.value }));
   }
 
   // Handle PATCH request
   async function handleUpdate(e) {
-    e.preventDefault(); // prevent page reload
+    e.preventDefault();
     try {
       const response = await fetch(`http://localhost:8080/events/${event.id}`, {
         method: "PATCH",
@@ -49,9 +55,30 @@ export default function EventForm({ event }) {
     }
   }
 
+  // Handle DELETE request
+  async function handleDelete() {
+    if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete event");
+      }
+
+      alert("Event slettet!");
+      // Optional redirect or further action
+      // window.location.href = "/events";
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      alert("Noget gik galt under sletningen.");
+    }
+  }
+
   return (
     <form className="flex flex-col shadow-md p-4 h-full" onSubmit={handleUpdate}>
-      {/* Input fields, unchanged */}
       <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
@@ -84,6 +111,16 @@ export default function EventForm({ event }) {
           onChange={handleDateChange}
         />
       </div>
+      <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4 bg-white" htmlFor="dato">Lokation:</label>
+        <input
+          className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
+          type="text"
+          id="dato"
+          value={eventInfo.location.name + " - " + eventInfo.location.address}
+          onChange={handleLocationChange}
+        />
+      </div>
 
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
         <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">Beskrivelse:</label>
@@ -98,13 +135,14 @@ export default function EventForm({ event }) {
       <div className="flex justify-center p-4 gap-20">
         <button
           type="button"
-          className="bg-[#800000] text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+          onClick={handleDelete}
+          className="bg-[#800000] text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
         >
           Slet Event
         </button>
         <button
           type="submit"
-          className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000]  hover:bg-[#800000] hover:text-white cursor-pointer"
+          className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
         >
           Opret Event
         </button>
