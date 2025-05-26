@@ -7,6 +7,7 @@ const ConfirmedSektion = () => {
   const [bookingData, setBookingData] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
+
   useEffect(() => {
     const data = localStorage.getItem("bookingConfirmation");
     if (data) {
