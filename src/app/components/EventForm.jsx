@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function EventForm({ event }) {
   const [eventInfo, setEventInfo] = useState({
@@ -79,8 +79,24 @@ export default function EventForm({ event }) {
     }
   }
 
+  // Billeder fra SMK API
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500);
+  function loadMore() {
+  fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+    .then((res) => res.json())
+    .then((data) => {
+      const newArtworks = data.items || [];
+      setArtworks([...artworks, ...newArtworks]);
+      setOffset(offset + 50);
+    });
+  }
+  useEffect(() => {
+    loadMore();
+  }, []);
+
   return (
-    <form className="flex flex-col shadow-md p-4 h-full" onSubmit={handleUpdate}>
+    <form className="flex flex-col shadow-md p-4 h-screen overflow-y-auto" onSubmit={handleUpdate}>
       <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
@@ -139,6 +155,40 @@ export default function EventForm({ event }) {
           onChange={handleDescriptionChange}
         />
       </div>
+
+        <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
+          {artworks
+            .filter((art) => art.has_image)
+            .map((art) => {
+              const imgSrc =
+                art.image_thumbnail ||
+                art.image?.thumbnail ||
+                art.image?.web ||
+                art.images?.[0]?.web;
+              return (
+                <li
+                  className="shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100"
+                  key={art.id}
+                >
+                  {imgSrc ? (
+                    <img
+                      src={imgSrc}
+                      alt={art.titles?.[0]?.title || "Artwork"}
+                      title={`ID: ${art.id}`}
+                      className="mt-2 w-full h-auto object-cover"
+                    />
+                  ) : (
+                    <div className="mt-2 text-gray-500">No image available</div>
+                  )}
+                </li>
+              );
+            })}
+        </ul>
+        <button
+          type="button"
+          onClick={loadMore}
+          className="text-[#800000] border-2 border-[#800000] py-2 px-4 mb-10 mt-5 mx-auto hover:bg-[#800000] hover:text-white">Indlæs flere
+        </button>
 
       <div className="flex justify-center p-4 gap-20">
         <button
