@@ -9,28 +9,34 @@ export default function CreateEvent({ onCancel }) {
     title: "",
     curator: "",
     date: "",
-    location: { name: "", address: "" },
+    location: "",
     description: "",
   });
 
-  function handleChange(e) {
-    const { name, value } = e.target;
-    if (name === "location") {
-      const [nameVal, addressVal] = value.split(" - ");
-      setEventInfo((prev) => ({
-        ...prev,
-        location: { name: nameVal, address: addressVal },
-      }));
-    } else {
-      setEventInfo((prev) => ({ ...prev, [name]: value }));
-    }
+    function handleTitleChange(e) {
+    setEventInfo((prev) => ({ ...prev, title: e.target.value }));
+  }
+  function handleCuratorChange(e) {
+    setEventInfo((prev) => ({ ...prev, curator: e.target.value }));
+  }
+  function handleDateChange(e) {
+    setEventInfo((prev) => ({ ...prev, date: e.target.value }));
+  }
+  function handleLocationNameChange(e) {
+    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
+  }
+  function handleLocationAddressChange(e) {
+    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
+  }
+  function handleDescriptionChange(e) {
+    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const res = await fetch("http://localhost:8080/events", {
-        method: "PUT",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(eventInfo),
       });
@@ -44,16 +50,69 @@ export default function CreateEvent({ onCancel }) {
   }
 
   return (
-    <form className="flex flex-col shadow-md p-4 h-full" onSubmit={handleSubmit}>
+    <form className="flex flex-col shadow-md p-4 h-full bg-white" onSubmit={handleSubmit}>
       {/* Input fields ... */}
+        <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
+        <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
+        <input
+          className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
+          placeholder="Event navn"
+          type="text"
+          id="titel"
+          value={eventInfo.title}
+          onChange={handleTitleChange}
+        />
+      </div>
+       <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4 bg-white" htmlFor="kurator">Kurator:</label>
+        <input
+          className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
+          type="text"
+          id="kurator"
+          placeholder="Kuratorens Navn"
+          value={eventInfo.curator}
+          onChange={handleCuratorChange}
+        />
+      </div>
+        <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4 bg-white" htmlFor="dato">Dato:</label>
+        <input
+          className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
+          placeholder="DD/MM/ÅÅÅÅ"
+          type="text"
+          id="dato"
+          value={eventInfo.date}
+          onChange={handleDateChange}
+        />
+      </div>
+       <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4 bg-white" htmlFor="location">Lokation:</label>
+        <div className="flex justify-end w-1/2">
+          <input
+          className="bg-gray-300 p-4 h-full text-white w-1/2"
+          type="text"
+          id="navn"
+          placeholder="Hallens Navn"
+          value={eventInfo.location.name}
+          onChange={handleLocationNameChange}
+        />
+          <input
+          className="bg-gray-300 ml-2 p-4 h-full text-white w-full"
+          type="text"
+          id="adresse"
+          placeholder="Adresse"
+          value={eventInfo.location.address}
+          onChange={handleLocationAddressChange}
+        />
+        </div>
+      </div>
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
         <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">Beskrivelse:</label>
         <textarea
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
-          name="description"
           value={eventInfo.description}
-          onChange={handleChange}
+          onChange={handleDescriptionChange}
         />
       </div>
 
