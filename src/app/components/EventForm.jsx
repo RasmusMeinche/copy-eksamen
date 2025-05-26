@@ -155,7 +155,7 @@ export default function EventForm({ event }) {
           onChange={handleDescriptionChange}
         />
       </div>
-
+      <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
         <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
           {artworks
             .filter((art) => art.has_image)
