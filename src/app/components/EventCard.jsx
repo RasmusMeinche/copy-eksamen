@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+
+import { useState, useEffect } from "react";
 import { getLocalData } from "@/lib/local";
 import Image from "next/image";
 import Button from "./Button";
@@ -8,13 +9,15 @@ import Link from "next/link";
 import Kuratoredit from "./Kuratoredit";
 import CreateEvent from "./CreateEvent";
 
-export const EventCard = ({ searchQuery = "" }) => {
-  const [objectDataList, setObjectDataList] = useState([]);
+export default function EventCard() {
+  const [showForm, setShowForm] = useState(false);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       const localData = await getLocalData();
-      const eventsWithArtwork = await Promise.all(
+
+      const objectDataList = await Promise.all(
         localData.map(async (event) => {
           const artworkId = event.artworkIds[0];
           const res = await fetch(
@@ -27,21 +30,12 @@ export const EventCard = ({ searchQuery = "" }) => {
           };
         })
       );
-      setObjectDataList(eventsWithArtwork);
-    };
+
+      setEvents(objectDataList);
+    }
 
     fetchData();
   }, []);
-
-  const filteredData = objectDataList.filter(({ event, objectData }) => {
-    const lowerQuery = searchQuery.toLowerCase();
-    return (
-      event.title.toLowerCase().includes(lowerQuery) ||
-      event.curator.toLowerCase().includes(lowerQuery) ||
-      event.description.toLowerCase().includes(lowerQuery) ||
-      (objectData?.title?.toLowerCase().includes(lowerQuery) ?? false)
-    );
-  });
 
   return (
     <ClerkProvider>
@@ -49,13 +43,20 @@ export const EventCard = ({ searchQuery = "" }) => {
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
           <div className="flex col-start-2 justify-center mb-16 mt-16">
             <button
-              onClick={CreateEvent}
+              onClick={() => setShowForm(true)}
               className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
             >
               Opret Event
             </button>
           </div>
-          {filteredData.map(({ event, objectData }) => {
+
+          {showForm && (
+            <div className="col-start-2 w-full">
+              <CreateEvent onCancel={() => setShowForm(false)} />
+            </div>
+          )}
+
+          {events.map(({ event, objectData }) => {
             const imageUrl = objectData?.image_thumbnail;
 
             return (
@@ -105,4 +106,4 @@ export const EventCard = ({ searchQuery = "" }) => {
       </SignedIn>
     </ClerkProvider>
   );
-};
+}
