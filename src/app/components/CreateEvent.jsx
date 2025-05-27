@@ -17,7 +17,6 @@ export default function CreateEvent({ onCancel }) {
     artworkIds: [],
   });
 
-  // Load locations from backend
   useEffect(() => {
     async function fetchLocations() {
       try {
@@ -32,7 +31,6 @@ export default function CreateEvent({ onCancel }) {
     fetchLocations();
   }, []);
 
-  // Handlers
   function handleChange(field, value) {
     setEventInfo((prev) => ({ ...prev, [field]: value }));
   }
