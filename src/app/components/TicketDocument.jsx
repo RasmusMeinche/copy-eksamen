@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
   page: {
@@ -27,16 +27,17 @@ const styles = StyleSheet.create({
     width: '48%',
   },
   title: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: '500',
     marginBottom: 8,
   },
   infoLabel: {
-    fontWeight: 'bold',
+    fontWeight: '700',
     marginTop: 6,
   },
   infoText: {
     marginBottom: 4,
+    fontWeight: '400',
   },
 });
 
@@ -45,7 +46,7 @@ const TicketDocument = ({ event, tickets, name, email }) => (
   <Document>
     <Page size="A6" style={styles.page}>
       <View style={styles.frame}>
-        <Text style={styles.title}>{event.title}</Text>
+        <Text style={styles.title}>Event: {event.title}</Text>
 
         <View style={styles.row}>
           <View style={styles.column}>
@@ -63,7 +64,6 @@ const TicketDocument = ({ event, tickets, name, email }) => (
               {new Date(event.date).toLocaleDateString('da-DK')}
             </Text>
           </View>
-
           <View style={styles.column}>
             <Text style={styles.infoLabel}>Antal Billetter:</Text>
             <Text style={styles.infoText}>{tickets}x</Text>
