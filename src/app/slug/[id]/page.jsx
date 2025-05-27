@@ -1,8 +1,8 @@
-import { getLocalData } from "@/lib/local";
+import { getLocalData } from "../../../lib/local";
 import * as Dialog from "@radix-ui/react-dialog";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import EventForm from "@/app/components/EventForm";
+import EventForm from "../../components/EventForm";
 
 export default async function Page({ params }) {
   const { id } = params;
@@ -17,7 +17,7 @@ export default async function Page({ params }) {
     <Dialog.Root open>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50 z-50" />
-        <Dialog.Content className="fixed top-8 left-1/2 w-full max-w-6xl -translate-x-1/2 bg-white rounded-lg p-8 z-50 shadow-lg max-h-[90vh] overflow-y-auto">
+        <Dialog.Content className="fixed top-8 left-1/2 w-full max-w-5xl -translate-x-1/2 bg-white rounded-lg p-6 z-50 shadow-lg max-h-[80vh] overflow-y-auto">
 
           <Dialog.Title className="text-xl font-semibold mb-4">Rediger Event</Dialog.Title>
 
