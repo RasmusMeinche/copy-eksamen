@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getLocalData } from "@/lib/local";
+import { getLocalData } from "../../lib/local";
 import EventSektion from "../components/EventSektion";
 import FormSektion from "../components/FormSektion";
 import { useSearchParams } from "next/navigation";

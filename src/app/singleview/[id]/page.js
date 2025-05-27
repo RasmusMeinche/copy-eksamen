@@ -7,8 +7,6 @@ export default async function Singleview({ params }) {
   const { id } = params;
   const art = await getArtworkById(id);
 
-  if (!art) return <div>Artwork not found</div>;
-
   //////////////////////////////////////////////////////////////////////////////
 
   return (

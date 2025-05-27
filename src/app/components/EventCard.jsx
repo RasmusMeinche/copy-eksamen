@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getLocalData } from "@/lib/local";
+import { getLocalData } from "../../lib/local";
 import Image from "next/image";
 import Button from "./Button";
 import { ClerkProvider, SignedIn } from "@clerk/nextjs";

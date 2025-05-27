@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import PDFTicketButton from './PDFTicketButton';
 
 const ConfirmedSektion = () => {
   const [bookingData, setBookingData] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+
 
   useEffect(() => {
     const data = localStorage.getItem("bookingConfirmation");
@@ -90,6 +92,7 @@ const ConfirmedSektion = () => {
             <br />
             {tickets}x
           </p>
+          <PDFTicketButton event={event} tickets={tickets} />
         </div>
       </div>
     </section>
