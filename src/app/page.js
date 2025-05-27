@@ -5,8 +5,9 @@ import EventCard from "./components/EventCard";
 export default function Home() {
   return (
     <section>
-      <Hero />
-      <Header title="EVENTS" />
+      <Hero>
+        <Header title="EVENTS" />
+      </Hero>
       <EventCard />
     </section>
   );
