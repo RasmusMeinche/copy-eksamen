@@ -2,7 +2,9 @@
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
+<<<<<<< HEAD
 const Header = ({
   title,
   bgColor = "#800000",
@@ -41,6 +43,30 @@ const Header = ({
             placeholder="Søg i events og værker..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+=======
+const Header = ({ title, bgColor = "#800000" }) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const toggleSearch = () => {
+    setShowSearch(!showSearch);
+  };
+
+  return (
+    <section
+      className={`${isHome ? "absolute z-10" : "relative"} top-0 left-0 right-0 flex justify-between items-center text-white p-4 px-8`}
+      style={{ backgroundColor: isHome ? "transparent" : bgColor }}>
+      <div className="flex items-center gap-4">
+        <Link href="/">
+          <Image
+            src="/img/SMK_MiniLogo_White.png"
+            alt="Logo"
+            width={240}
+            height={82}
+>>>>>>> Olivers-Branch
           />
           <button
             type="button"
