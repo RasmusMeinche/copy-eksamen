@@ -18,11 +18,8 @@ const Header = ({ title, bgColor = "#800000" }) => {
 
   return (
     <section
-  className={`${
-    isHome ? "absolute z-10" : "relative"
-  } top-0 left-0 right-0 flex justify-between items-center text-white p-4 px-8`}
-  style={{ backgroundColor: isHome ? "transparent" : bgColor }}
->
+      className={`${isHome ? "absolute z-10" : "relative"} top-0 left-0 right-0 flex justify-between items-center text-white p-4 px-8`}
+      style={{ backgroundColor: isHome ? "transparent" : bgColor }}>
       <div className="flex items-center gap-4">
         <Link href="/">
           <Image
