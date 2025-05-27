@@ -44,27 +44,20 @@ export default function CreateEvent({ onCancel }) {
         bookedTickets: [],
       };
 
-      console.log("🔄 Forsøger at sende nyt event:");
-      console.log("➡️ Payload:", payload);
-
       const res = await fetch("http://localhost:8080/events", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
-      console.log("📥 Server respons status:", res.status);
-      const data = await res.json();
-      console.log("📦 Server respons data:", data);
-
-      if (!res.ok) throw new Error(data.message || "Noget gik galt");
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Noget gik galt");
+      }
 
       alert("Event oprettet!");
       onCancel();
     } catch (err) {
-      console.error("❌ Fejl under oprettelse:", err);
       alert("Kunne ikke oprette event: " + err.message);
     }
   }

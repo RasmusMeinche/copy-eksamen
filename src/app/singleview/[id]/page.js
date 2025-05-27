@@ -1,6 +1,6 @@
-import Header from "@/app/components/Header";
-import { getArtworkById } from "@/lib/smk";
-
+import Header from "../../components/Header";
+import { getArtworkById } from "../../../lib/smk";
+import Image from "next/image";
 //////////////////////////////////////////////////////////////////////////////
 
 export default async function Singleview({ params }) {
@@ -23,8 +23,11 @@ export default async function Singleview({ params }) {
           className="flex pt-10 px-12 pb-10 gap-10"
           style={{ backgroundColor: art.suggested_bg_color }}
         >
-          <img
-            className="w-[750px] shadow-xl/50"
+          <Image
+            alt={art.titles?.[0]?.title || "Artwork Image"}
+            width={750}
+            height={750}
+            className="shadow-xl/50"
             src={art.image_thumbnail}
           />
           <div className="flex flex-col p-5">
