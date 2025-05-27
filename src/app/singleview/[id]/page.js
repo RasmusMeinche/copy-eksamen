@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import Header from "@/app/components/Header";
-import { getArtworkById } from "@/lib/smk";
-=======
 import Header from "../../components/Header";
 import { getArtworkById } from "../../../lib/smk";
->>>>>>> Olivers-Branch
 
 //////////////////////////////////////////////////////////////////////////////
 
