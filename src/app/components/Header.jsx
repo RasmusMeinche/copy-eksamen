@@ -11,27 +11,27 @@ const Header = ({
 }) => {
   return (
     <section
-      className="relative flex flex-col md:flex-row justify-between items-center text-white p-4 px-4 md:px-8"
+      className="relative flex flex-col md:flex-row justify-between items-center text-white p-4 px-4 md:px-8 @container"
       style={{ backgroundColor: bgColor }}
     >
       {/* Logo + Titel container */}
-      <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 w-full md:w-auto mb-4 md:mb-0">
-        <Link href="/">
-          <Image
-            src="/img/SMK_MiniLogo_White.png"
-            alt="Logo"
-            width={240}
-            height={82}
-            priority
-          />
-        </Link>
-        <h1
-          className="font-thin whitespace-nowrap text-white
-          text-[70px] leading-[60px] md:text-[115px] md:leading-[115px]"
-        >
-          {title}
-        </h1>
-      </div>
+     <div className="flex md:flex-row items-center gap-2 md:gap-4 md:mb-0 overflow-hidden h-[10cqw] relative">
+  <Link href="/">
+    <Image
+      src="/img/SMK_MiniLogo_White.png"
+      alt="Logo"
+      width={240}
+      height={82}
+      priority
+      className="flex w-auto h-[22px] sm:h-[22px] md:h-[32px] lg:h-[52px] xl:h-[72px] 2xl:h-[82px] max-h-[82px]"
+    />
+  </Link>
+  <h1
+    className="font-thin text-[11cqw] sm:text-[3.8cqw] md:text-[5.2cqw] lg:text-[6.5cqw] xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]"
+  >
+    {title}
+  </h1>
+</div>
 
       {/* Søgefelt */}
       <div className="w-full md:w-auto min-w-[0] md:min-w-[300px]">
