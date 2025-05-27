@@ -3,8 +3,12 @@ import { useState } from "react";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Header = ({ title, bgColor = "#800000" }) => {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
+
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -15,7 +19,7 @@ const Header = ({ title, bgColor = "#800000" }) => {
   return (
     <section
       className="relative flex justify-between items-center text-white p-4 px-8"
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: isHome ? "transparent" : bgColor }}
     >
       <div className="flex items-center gap-4">
         <Link href="/">
