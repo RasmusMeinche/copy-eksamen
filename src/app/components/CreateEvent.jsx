@@ -37,78 +37,53 @@ export default function CreateEvent({ onCancel }) {
     setEventInfo((prev) => ({ ...prev, [field]: value }));
   }
 
-  function convertToISODate(dateStr) {
-    console.log("convertToISODate input:", dateStr);
-
-    if (!dateStr || typeof dateStr !== "string") {
-      throw new Error("Dato skal være en ikke-tom tekststreng");
-    }
-
-    const parts = dateStr.split("/").map((p) => p.trim());
-    console.log("Split date parts:", parts);
-
-    if (parts.length !== 3) {
-      throw new Error("Dato skal være i formatet DD/MM/ÅÅÅÅ");
-    }
-
-    let [year, month ,day] = parts;
-
-    if (!day || !month || !year) {
-      throw new Error("Dato mangler dag, måned eller år");
-    }
-
-    // Valider at de er tal og ikke undefined eller tomme
-    if (
-      isNaN(day) ||
-      isNaN(month) ||
-      isNaN(year) ||
-      day === "" ||
-      month === "" ||
-      year === ""
-    ) {
-      throw new Error("Dag, måned og år skal være tal");
-    }
-
-    // For sikkerhed, konverter til tal først, så strings igen for at fjerne evt. foranstillede nuller
-    day = String(Number(day));
-    month = String(Number(month));
-    year = String(Number(year));
-
-    const isoDate = `${year.padStart(4, "0")}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-    console.log("Konverteret ISO dato:", isoDate);
-
-    return isoDate;
-  }
-
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       const payload = {
         ...eventInfo,
-        date: convertToISODate(eventInfo.date),
         locationId: selectedLocationId,
         bookedTickets: [],
       };
 
+      console.log("🔄 Forsøger at sende nyt event:");
+      console.log("➡️ Payload:", payload);
+
       const res = await fetch("http://localhost:8080/events", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Noget gik galt");
+      console.log("📥 Server respons status:", res.status);
+      const data = await res.json();
+      console.log("📦 Server respons data:", data);
+
+      if (!res.ok) throw new Error(data.message || "Noget gik galt");
+
       alert("Event oprettet!");
       onCancel();
     } catch (err) {
+      console.error("❌ Fejl under oprettelse:", err);
       alert("Kunne ikke oprette event: " + err.message);
     }
   }
 
   return (
-    <form className="flex flex-col shadow-md p-4 h-full bg-white" onSubmit={handleSubmit}>
+    <form
+      className="flex flex-col shadow-md p-4 h-full bg-white"
+      onSubmit={handleSubmit}
+    >
       {/* Titel */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="title">Titel:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="title"
+        >
+          Titel:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           placeholder="Event navn"
@@ -121,7 +96,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Kurator */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="curator">Kurator:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="curator"
+        >
+          Kurator:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -134,11 +114,15 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Dato */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="date">Dato:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="date"
+        >
+          Dato:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
-          placeholder="DD/MM/ÅÅÅÅ"
-          type="text"
+          type="date"
           id="date"
           value={eventInfo.date}
           onChange={(e) => handleChange("date", e.target.value)}
@@ -147,7 +131,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Lokation vælger */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="location">Lokation:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="location"
+        >
+          Lokation:
+        </label>
         <select
           id="location"
           className="bg-gray-300 text-white ml-4 p-4 w-1/2"
@@ -155,7 +144,10 @@ export default function CreateEvent({ onCancel }) {
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
           {locations.map((loc) => (
-            <option key={loc.id} value={loc.id}>
+            <option
+              key={loc.id}
+              value={loc.id}
+            >
               {loc.name} – {loc.address}
             </option>
           ))}
@@ -164,7 +156,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Beskrivelse */}
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
-        <label className="font-bold mb-2 mx-4 py-2" htmlFor="description">Beskrivelse:</label>
+        <label
+          className="font-bold mb-2 mx-4 py-2"
+          htmlFor="description"
+        >
+          Beskrivelse:
+        </label>
         <textarea
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="description"

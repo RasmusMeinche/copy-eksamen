@@ -9,7 +9,7 @@ import Link from "next/link";
 import Kuratoredit from "./Kuratoredit";
 import CreateEvent from "./CreateEvent";
 
-export default function EventCard() {
+export default function EventCard({ searchQuery }) {
   const [showForm, setShowForm] = useState(false);
   const [events, setEvents] = useState([]);
 
@@ -37,6 +37,13 @@ export default function EventCard() {
     fetchData();
   }, []);
 
+  const filteredEvents = events.filter(({ event }) =>
+    [event.title, event.curator, event.description]
+      .join(" ")
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+  );
+
   return (
     <ClerkProvider>
       <SignedIn>
@@ -44,7 +51,7 @@ export default function EventCard() {
           <div className="flex col-start-2 justify-center mb-16 mt-16">
             <button
               onClick={() => setShowForm(true)}
-              className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000]  hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+              className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:bg-white cursor-pointer"
             >
               Opret Event
             </button>
@@ -56,7 +63,13 @@ export default function EventCard() {
             </div>
           )}
 
-          {events.map(({ event, objectData }) => {
+          {filteredEvents.length === 0 && (
+            <p className="col-start-2 text-white text-xl text-center my-10">
+              Ingen events matcher din søgning.
+            </p>
+          )}
+
+          {filteredEvents.map(({ event, objectData }) => {
             const imageUrl = objectData?.image_thumbnail;
 
             return (
