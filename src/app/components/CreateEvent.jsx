@@ -56,7 +56,8 @@ export default function CreateEvent({ onCancel }) {
       }
 
       alert("Event oprettet!");
-      onCancel();
+      window.location.reload(); // ← Her opdateres siden automatisk
+
     } catch (err) {
       alert("Kunne ikke oprette event: " + err.message);
     }
@@ -69,10 +70,7 @@ export default function CreateEvent({ onCancel }) {
     >
       {/* Titel */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label
-          className="font-bold pl-4"
-          htmlFor="title"
-        >
+        <label className="font-bold pl-4" htmlFor="title">
           Titel:
         </label>
         <input
@@ -87,10 +85,7 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Kurator */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label
-          className="font-bold pl-4"
-          htmlFor="curator"
-        >
+        <label className="font-bold pl-4" htmlFor="curator">
           Kurator:
         </label>
         <input
@@ -105,10 +100,7 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Dato */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label
-          className="font-bold pl-4"
-          htmlFor="date"
-        >
+        <label className="font-bold pl-4" htmlFor="date">
           Dato:
         </label>
         <input
@@ -122,10 +114,7 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Lokation vælger */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label
-          className="font-bold pl-4"
-          htmlFor="location"
-        >
+        <label className="font-bold pl-4" htmlFor="location">
           Lokation:
         </label>
         <select
@@ -135,10 +124,7 @@ export default function CreateEvent({ onCancel }) {
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
           {locations.map((loc) => (
-            <option
-              key={loc.id}
-              value={loc.id}
-            >
+            <option key={loc.id} value={loc.id}>
               {loc.name} – {loc.address}
             </option>
           ))}
@@ -147,10 +133,7 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Beskrivelse */}
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
-        <label
-          className="font-bold mb-2 mx-4 py-2"
-          htmlFor="description"
-        >
+        <label className="font-bold mb-2 mx-4 py-2" htmlFor="description">
           Beskrivelse:
         </label>
         <textarea
