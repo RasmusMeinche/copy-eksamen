@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export default function EventForm({ event }) {
+export default function EventForm({ event, onCancel }) {
   const [eventInfo, setEventInfo] = useState({
     title: event.title,
     curator: event.curator,
@@ -11,9 +11,9 @@ export default function EventForm({ event }) {
     description: event.description,
   });
 
-  console.log("det her er lokationen", event.location)
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500);
 
-  // Input change handlers
   function handleTitleChange(e) {
     setEventInfo((prev) => ({ ...prev, title: e.target.value }));
   }
@@ -25,14 +25,18 @@ export default function EventForm({ event }) {
   function handleDateChange(e) {
     setEventInfo((prev) => ({ ...prev, date: e.target.value }));
   }
+
   function handleLocationChange(e) {
-    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
+    setEventInfo((prev) => ({
+      ...prev,
+      location: { ...prev.location, name: e.target.value },
+    }));
   }
+
   function handleDescriptionChange(e) {
     setEventInfo((prev) => ({ ...prev, description: e.target.value }));
   }
 
-  // Handle PATCH request
   async function handleUpdate(e) {
     e.preventDefault();
     try {
@@ -48,16 +52,14 @@ export default function EventForm({ event }) {
         throw new Error("Failed to update event");
       }
 
-      const updatedEvent = await response.json();
       alert("Event opdateret!");
-      console.log("Updated event:", updatedEvent);
+      if (onCancel) onCancel(); // Luk boksen efter opdatering
     } catch (error) {
       console.error("Error updating event:", error);
       alert("Noget gik galt under opdateringen.");
     }
   }
 
-  // Handle DELETE request
   async function handleDelete() {
     if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
 
@@ -71,33 +73,33 @@ export default function EventForm({ event }) {
       }
 
       alert("Event slettet!");
-      // Optional redirect or further action
-      // window.location.href = "/events";
+      if (onCancel) onCancel(); // Luk boksen efter sletning
     } catch (error) {
       console.error("Error deleting event:", error);
       alert("Noget gik galt under sletningen.");
     }
   }
 
-  // Billeder fra SMK API
-  const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
   function loadMore() {
-  fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
-    .then((res) => res.json())
-    .then((data) => {
-      const newArtworks = data.items || [];
-      setArtworks([...artworks, ...newArtworks]);
-      setOffset(offset + 50);
-    });
+    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+      .then((res) => res.json())
+      .then((data) => {
+        const newArtworks = data.items || [];
+        setArtworks([...artworks, ...newArtworks]);
+        setOffset(offset + 50);
+      });
   }
+
   useEffect(() => {
     loadMore();
   }, []);
 
   return (
-    <form className="flex flex-col shadow-md p-4 h-screen overflow-y-auto" onSubmit={handleUpdate}>
-      <div className="flex items-center justify-between shadow-md text-xl my-2 h-full">
+    <form
+      className="flex flex-col shadow-md p-4 h-screen overflow-y-auto"
+      onSubmit={handleUpdate}
+    >
+      <div className="flex items-center justify-between shadow-md text-xl my-2">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
@@ -109,9 +111,7 @@ export default function EventForm({ event }) {
       </div>
 
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="kurator">
-          Kurator:
-        </label>
+        <label className="font-bold pl-4 bg-white" htmlFor="kurator">Kurator:</label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -122,9 +122,7 @@ export default function EventForm({ event }) {
       </div>
 
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="dato">
-          Dato:
-        </label>
+        <label className="font-bold pl-4 bg-white" htmlFor="dato">Dato:</label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -133,21 +131,20 @@ export default function EventForm({ event }) {
           onChange={handleDateChange}
         />
       </div>
+
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="dato">Lokation:</label>
+        <label className="font-bold pl-4 bg-white" htmlFor="lokation">Lokation:</label>
         <input
           className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
           type="text"
-          id="dato"
+          id="lokation"
           value={eventInfo.location.name + " - " + eventInfo.location.address}
           onChange={handleLocationChange}
         />
       </div>
 
       <div className="my-4 shadow-md text-xl flex flex-col">
-        <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">
-          Beskrivelse:
-        </label>
+        <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">Beskrivelse:</label>
         <textarea
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
@@ -155,40 +152,44 @@ export default function EventForm({ event }) {
           onChange={handleDescriptionChange}
         />
       </div>
+
       <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
-        <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
-          {artworks
-            .filter((art) => art.has_image)
-            .map((art) => {
-              const imgSrc =
-                art.image_thumbnail ||
-                art.image?.thumbnail ||
-                art.image?.web ||
-                art.images?.[0]?.web;
-              return (
-                <li
-                  className="shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100"
-                  key={art.id}
-                >
-                  {imgSrc ? (
-                    <img
-                      src={imgSrc}
-                      alt={art.titles?.[0]?.title || "Artwork"}
-                      title={`ID: ${art.id}`}
-                      className="mt-2 w-full h-auto object-cover"
-                    />
-                  ) : (
-                    <div className="mt-2 text-gray-500">No image available</div>
-                  )}
-                </li>
-              );
-            })}
-        </ul>
-        <button
-          type="button"
-          onClick={loadMore}
-          className="text-[#800000] border-2 border-[#800000] py-2 px-4 mb-10 mt-5 mx-auto hover:bg-[#800000] hover:text-white">Indlæs flere
-        </button>
+      <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
+        {artworks
+          .filter((art) => art.has_image)
+          .map((art) => {
+            const imgSrc =
+              art.image_thumbnail ||
+              art.image?.thumbnail ||
+              art.image?.web ||
+              art.images?.[0]?.web;
+            return (
+              <li
+                className="shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100"
+                key={art.id}
+              >
+                {imgSrc ? (
+                  <img
+                    src={imgSrc}
+                    alt={art.titles?.[0]?.title || "Artwork"}
+                    title={`ID: ${art.id}`}
+                    className="mt-2 w-full h-auto object-cover"
+                  />
+                ) : (
+                  <div className="mt-2 text-gray-500">No image available</div>
+                )}
+              </li>
+            );
+          })}
+      </ul>
+
+      <button
+        type="button"
+        onClick={loadMore}
+        className="text-[#800000] border-2 border-[#800000] py-2 px-4 mb-10 mt-5 mx-auto hover:bg-[#800000] hover:text-white"
+      >
+        Indlæs flere
+      </button>
 
       <div className="flex justify-center p-4 gap-20">
         <button
