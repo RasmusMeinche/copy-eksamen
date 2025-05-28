@@ -26,12 +26,6 @@ export default function EventForm({ event, onCancel }) {
     setEventInfo((prev) => ({ ...prev, date: e.target.value }));
   }
 
-  function handleLocationChange(e) {
-    setEventInfo((prev) => ({
-      ...prev,
-      location: { ...prev.location, name: e.target.value },
-    }));
-  }
 
   function handleDescriptionChange(e) {
     setEventInfo((prev) => ({ ...prev, description: e.target.value }));
@@ -79,6 +73,23 @@ export default function EventForm({ event, onCancel }) {
       alert("Noget gik galt under sletningen.");
     }
   }
+
+    const [locations, setLocations] = useState([]);
+  const [selectedLocationId, setSelectedLocationId] = useState("");
+
+    useEffect(() => {
+    async function fetchLocations() {
+      try {
+        const res = await fetch("http://localhost:8080/locations");
+        const data = await res.json();
+        setLocations(data);
+        if (data.length > 0) setSelectedLocationId(data[0].id);
+      } catch (err) {
+        console.error("Kunne ikke hente locations:", err);
+      }
+    }
+    fetchLocations();
+  }, []);
 
   function loadMore() {
     fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
@@ -132,15 +143,22 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="lokation">Lokation:</label>
-        <input
-          className="bg-gray-300 ml-4 p-4 h-full text-white w-1/2"
-          type="text"
-          id="lokation"
-          value={eventInfo.location.name + " - " + eventInfo.location.address}
-          onChange={handleLocationChange}
-        />
+     <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4" htmlFor="location">
+          Lokation:
+        </label>
+        <select
+          id="location"
+          className="bg-gray-300 text-white ml-4 p-4 w-1/2"
+          value={selectedLocationId}
+          onChange={(e) => setSelectedLocationId(e.target.value)}
+        >
+          {locations.map((loc) => (
+            <option key={loc.id} value={loc.id}>
+              {loc.name} – {loc.address}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="my-4 shadow-md text-xl flex flex-col">
