@@ -47,7 +47,7 @@ export default function EventForm({ event, onCancel }) {
       }
 
       alert("Event opdateret!");
-      if (onCancel) onCancel(); // Luk boksen efter opdatering
+      window.location.href = "/"; // Luk boksen efter opdatering
     } catch (error) {
       console.error("Error updating event:", error);
       alert("Noget gik galt under opdateringen.");
@@ -221,7 +221,7 @@ export default function EventForm({ event, onCancel }) {
           type="submit"
           className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
         >
-          Opret Event
+          Opdater Event
         </button>
       </div>
     </form>
