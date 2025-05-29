@@ -87,7 +87,7 @@ export default function CreateEvent({ onCancel }) {
     load();
   }, []);
 
-  // Rykker valgte kunstværker til toppen af listen
+  // Rykker valgte kunstværker til toppen af listen¨
 
   function Select(artObjectNumber) {
   if (!selectedArtworks.includes(artObjectNumber)) {
