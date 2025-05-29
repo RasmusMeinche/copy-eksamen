@@ -48,10 +48,10 @@ export default function EventCard({ searchQuery }) {
     <ClerkProvider>
       <SignedIn>
         <section className="grid grid-cols-[minmax(20px,0.2fr)_1fr_minmax(20px,0.2fr)] justify-center items-center py-8 bg-[#800000] font-roboto-condensed">
-          <div className="flex col-start-2 justify-center mb-16 mt-16">
+          <div className="flex col-start-2 justify-center mb-8 mt-8 lg:mb-16 lg:mt-16">
             <button
               onClick={() => setShowForm(true)}
-              className="bg-[#800000] border border-white text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:bg-white cursor-pointer"
+              className="bg-[#800000] border border-white text-white text-s sm:text-lg md:text-xl lg:text-2xl xl:text-3xl grid place-items-start items-end md:w-1/4 md:h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:bg-white cursor-pointer"
             >
               Opret Event
             </button>
@@ -77,15 +77,15 @@ export default function EventCard({ searchQuery }) {
                 key={event.id}
                 className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border mb-10 mt-10 border-white text-white w-full overflow-visible"
               >
-                <div className="flex gap-4 border border-white items-center p-4">
-                  <div className="h-full">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-4 border border-white items-center p-4">
+                  <div className="lg:h-full">
                     {imageUrl ? (
                       <Image
                         src={imageUrl}
                         alt="Event Image"
-                        width={300}
-                        height={300}
-                        className="bg-amber-50 h-full max-h-[220px] object-cover"
+                        width={1080}
+                        height={720}
+                        className="bg-amber-50 h-full w-full lg:max-h-[220px] object-cover"
                       />
                     ) : (
                       <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
@@ -101,10 +101,10 @@ export default function EventCard({ searchQuery }) {
                       </Link>
                     </div>
                     <p className="mb-4 font-thin text-xl">{event.curator}</p>
-                    <p className="text-m font-medium max-w-[550px] w-[50%] mb-4 leading-6">
+                    <p className="text-m font-medium max-w-[550px] md:w-[70%] lg:w-[50%] lg:mb-4 leading-6">
                       {event.description}
                     </p>
-                    <div className="flex flex-row justify-between items-end">
+                    <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-0 lg:gap-0 xl:gap-0 2xl:gap-0 lg:items-end mt-4 lg:mt-0">
                       <p className="font-extralight text-2xl">{event.date}</p>
                       <Link href={`/eventsingleview/${event.id}`}>
                         <Button title="Læs mere" />
