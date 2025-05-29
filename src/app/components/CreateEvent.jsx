@@ -72,6 +72,7 @@ export default function CreateEvent({ onCancel }) {
   const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
   const [selectedArtworks, setSelectedArtworks] = useState([]); // Til at holde styr på valgte kunstværker
 
+  
   function load() {
     fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
       .then((res) => res.json())
@@ -88,13 +89,12 @@ export default function CreateEvent({ onCancel }) {
 
   // Rykker valgte kunstværker til toppen af listen
 
-  function Select(artId) {
-    if (!selectedArtworks.includes(artId)) {
-      setSelectedArtworks([artId, ...selectedArtworks]);
-    }
-    else {
-      setSelectedArtworks(selectedArtworks.filter(id => id !== artId));
-    }
+  function Select(artObjectNumber) {
+  if (!selectedArtworks.includes(artObjectNumber)) {
+    setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
+  } else {
+    setSelectedArtworks(selectedArtworks.filter(id => id !== artObjectNumber));
+  }
   }
   
   // Sorterer kunstværkerne, så de valgte kommer først
@@ -102,9 +102,9 @@ export default function CreateEvent({ onCancel }) {
 
   const sortedArtworks = [
     ...selectedArtworks
-      .map(id => artworks.find(a => a.id === id))
+      .map(objectNumber => artworks.find(a => a.object_number === objectNumber))
       .filter(Boolean),
-    ...artworks.filter(a => !selectedArtworks.includes(a.id))
+    ...artworks.filter(a => !selectedArtworks.includes(a.object_number))
   ];
 
   ///////////////////////////
@@ -195,8 +195,8 @@ export default function CreateEvent({ onCancel }) {
     <div className="my-6 mx-2 p-5 h-[600px] overflow-y-auto">
     <ul className="grid grid-cols-5 gap-4 p-2">
       {sortedArtworks
-        .filter((art) => art.has_image)
-        .map((art) => {
+        .filter(art => art.has_image)
+        .map(art => {
           const imgSrc =
             art.image_thumbnail ||
             art.image?.thumbnail ||
@@ -204,17 +204,19 @@ export default function CreateEvent({ onCancel }) {
             art.images?.[0]?.web;
           return (
             <li
-              key={art.id}
-              onClick={() => Select(art.id)}
+              key={art.object_number}
+              onClick={() => Select(art.object_number)}
               className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
-              selectedArtworks.includes(art.id) ? "border-2 border-red-600" : ""}`}>
-              {imgSrc ? (
-                <img
-                  src={imgSrc}
-                  alt={art.titles?.[0]?.title || "Artwork"}
-                  title={`ID: ${art.id}`}
-                  className="mt-2 w-full h-auto object-cover"
-                />
+                selectedArtworks.includes(art.object_number) ? "border-2 border-red-600" : ""
+              }`}
+            >
+            {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={art.titles?.[0]?.title || "Artwork"}
+            title={`Object Number: ${art.object_number}`}
+            className="mt-2 w-full h-auto object-cover"
+          />
               ) : (
                 <div className="mt-2 text-gray-500">No image available</div>
               )}
