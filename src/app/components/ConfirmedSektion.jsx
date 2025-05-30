@@ -1,12 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import PDFTicketButton from './PDFTicketButton';
+import PDFTicketButton from "./PDFTicketButton";
 
 const ConfirmedSektion = () => {
   const [bookingData, setBookingData] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
-
 
   useEffect(() => {
     const data = localStorage.getItem("bookingConfirmation");
@@ -20,13 +19,6 @@ const ConfirmedSektion = () => {
       const newTotalBooked = previouslyBooked + justBooked;
       const remaining = total - newTotalBooked;
 
-      console.log("Samlet antal billetter:", total);
-      console.log("Allerede booket før:", previouslyBooked);
-      console.log("Lige booket nu:", justBooked);
-      console.log("Opdateret antal bookede:", newTotalBooked);
-      console.log("Billetter tilbage:", remaining);
-
-      // Hent billedet fra SMK API
       const fetchImage = async () => {
         const artworkId = parsedData.event.artworkIds[0];
         const res = await fetch(
@@ -46,53 +38,58 @@ const ConfirmedSektion = () => {
   const { event, tickets } = bookingData;
 
   return (
-    <section>
-      <div className="mt-4 flex justify-between items-stretch">
-        <div className="flex gap-6">
-          <div className="flex gap-6 items-stretch">
-            <div className="flex flex-col">
-              <h2 className="text-white text-2xl font-bold mb-2">
-                {event.title}
-              </h2>
-              {imageUrl ? (
-                <Image
-                  src={imageUrl}
-                  alt="Event Image"
-                  width={300}
-                  height={300}
-                  className="bg-amber-50 object-cover"
-                />
-              ) : (
-                <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
-                  No Image
-                </div>
-              )}
-            </div>
-            <div className="flex flex-col justify-end gap-6">
-              <p className="text-white text-lg">
-                <strong>Lokation:</strong>
-                <br />
-                {event.location?.address}
-              </p>
-              <p className="text-white text-lg">
-                <strong>Dato:</strong>
-                <br />
-                {new Date(event.date).toLocaleDateString("da-DK", {
-                  day: "2-digit",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </p>
-            </div>
+    <section className="px-4">
+      <div className="mt-4 flex flex-col lg:flex-row justify-between gap-6">
+        {/* Venstre side: billede + info */}
+        <div className="flex flex-col lg:flex-row gap-6 w-full lg:w-3/4">
+          <div className="flex flex-col items-center lg:items-start">
+            <h2 className="text-white text-2xl font-bold mb-2 text-center lg:text-left">
+              {event.title}
+            </h2>
+            {imageUrl ? (
+              <Image
+                src={imageUrl}
+                alt="Event Image"
+                width={300}
+                height={300}
+                className="bg-amber-50 object-cover w-full max-w-[300px] h-auto"
+              />
+            ) : (
+              <div className="w-full max-w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
+                No Image
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col justify-end gap-6 text-center lg:text-left">
+            <p className="text-white text-lg">
+              <strong>Lokation:</strong>
+              <br />
+              {event.location?.address}
+            </p>
+            <p className="text-white text-lg">
+              <strong>Dato:</strong>
+              <br />
+              {new Date(event.date).toLocaleDateString("da-DK", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
           </div>
         </div>
-        <div className="flex flex-col justify-end items-center gap-6">
+
+        {/* Højre side: antal billetter + knap */}
+        <div className="flex flex-col items-center lg:items-end justify-end gap-6 w-full lg:w-1/4 text-center lg:text-right">
           <p className="text-white text-lg">
             <strong>Antal Billetter:</strong>
             <br />
             {tickets}x
           </p>
-          <PDFTicketButton event={event} tickets={tickets} />
+          <PDFTicketButton
+            event={event}
+            tickets={tickets}
+          />
         </div>
       </div>
     </section>
