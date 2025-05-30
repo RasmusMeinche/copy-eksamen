@@ -41,6 +41,7 @@ export default function CreateEvent({ onCancel }) {
       const payload = {
         ...eventInfo,
         locationId: selectedLocationId,
+        artworkIds: selectedArtworks,
         bookedTickets: [],
       };
 
@@ -62,6 +63,51 @@ export default function CreateEvent({ onCancel }) {
       alert("Kunne ikke oprette event: " + err.message);
     }
   }
+
+  ///////////////////////////
+
+  // Alt om billeder herinde
+
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
+  const [selectedArtworks, setSelectedArtworks] = useState([]); // Til at holde styr på valgte kunstværker
+
+  
+  function load() {
+    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+      .then((res) => res.json())
+      .then((data) => {
+        const newArtworks = data.items || [];
+        setArtworks([...artworks, ...newArtworks]);
+        setOffset(offset + 50);
+      });
+  }
+ 
+  useEffect(() => {
+    load();
+  }, []);
+
+  // Rykker valgte kunstværker til toppen af listen¨
+
+  function Select(artObjectNumber) {
+  if (!selectedArtworks.includes(artObjectNumber)) {
+    setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
+  } else {
+    setSelectedArtworks(selectedArtworks.filter(id => id !== artObjectNumber));
+  }
+  }
+  
+  // Sorterer kunstværkerne, så de valgte kommer først
+  // og de øvrige kommer bagefter
+
+  const sortedArtworks = [
+    ...selectedArtworks
+      .map(objectNumber => artworks.find(a => a.object_number === objectNumber))
+      .filter(Boolean),
+    ...artworks.filter(a => !selectedArtworks.includes(a.object_number))
+  ];
+
+  ///////////////////////////
 
   return (
     <form
@@ -143,6 +189,50 @@ export default function CreateEvent({ onCancel }) {
           onChange={(e) => handleChange("description", e.target.value)}
         />
       </div>
+
+      {/* Vælg kunstværker */}
+    <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
+    <div className="my-6 mx-2 p-5 h-[600px] overflow-y-auto">
+    <ul className="grid grid-cols-5 gap-4 p-2">
+      {sortedArtworks
+        .filter(art => art.has_image)
+        .map(art => {
+          const imgSrc =
+            art.image_thumbnail ||
+            art.image?.thumbnail ||
+            art.image?.web ||
+            art.images?.[0]?.web;
+          return (
+            <li
+              key={art.object_number}
+              onClick={() => Select(art.object_number)}
+              className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
+                selectedArtworks.includes(art.object_number) ? "border-2 border-red-600" : ""
+              }`}
+            >
+            {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={art.titles?.[0]?.title || "Artwork"}
+            title={`Object Number: ${art.object_number}`}
+            className="mt-2 w-full h-auto object-cover"
+          />
+              ) : (
+                <div className="mt-2 text-gray-500">No image available</div>
+              )}
+            </li>
+          );
+        })}
+    </ul>
+  </div>
+
+      <button
+        type="button"
+        onClick={load}
+        className="text-[#800000] border-2 border-[#800000] py-2 px-4 mb-10 mt-5 mx-auto hover:bg-[#800000] hover:text-white"
+      >
+        Indlæs flere
+      </button>
 
       {/* Knapper */}
       <div className="flex justify-center p-4 gap-20">
