@@ -1,15 +1,15 @@
 "use client";
-import React, { useState } from "react";
+
 import Image from "next/image";
-import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MdLogout } from "react-icons/md";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 
 const Header = ({ title, bgColor = "#800000" }) => {
   const pathname = usePathname();
   const isHome = pathname === "/";
-
-  const [searchQuery, setSearchQuery] = useState("");
+  const { signOut } = useClerk();
 
   return (
     <section
@@ -30,28 +30,32 @@ const Header = ({ title, bgColor = "#800000" }) => {
             className="flex w-auto h-[22px] sm:h-[22px] md:h-[32px] lg:h-[52px] xl:h-[72px] 2xl:h-[82px] max-h-[82px]"
           />
         </Link>
-        <h1
-          className="font-thin text-[11cqw] sm:text-[3.8cqw] md:text-[5.2cqw] lg:text-[6.5cqw] xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]"
-        >
-          {title}
-        </h1>
+
+        {/* Titel ændres baseret på login-status */}
+        <SignedOut>
+          <h1 className="font-thin text-[11cqw] sm:text-[3.8cqw] md:text-[5.2cqw] lg:text-[6.5cqw] xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]">
+            {title}
+          </h1>
+        </SignedOut>
+        <SignedIn>
+          <h1 className="font-thin text-[11cqw] sm:text-[3.8cqw] md:text-[5.2cqw] lg:text-[6.5cqw] xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]">
+            KURATOR
+          </h1>
+        </SignedIn>
       </div>
 
-      {/* Search Field */}
-      <div className="w-full md:w-auto min-w-[0] md:min-w-[300px] mt-4 md:mt-0 relative">
-        <input
-          className="w-full bg-transparent placeholder:text-white focus:placeholder-transparent text-white text-sm border-2 border-slate-200 pl-3 pr-12 py-2 transition duration-300 ease focus:outline-none shadow-sm"
-          placeholder="Søg i events og værker..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <button
-          type="button"
-          className="absolute top-1 right-1 bottom-1 w-10 flex items-center justify-center rounded text-white text-sm hover:scale-105"
-        >
-          <IoSearchOutline className="scale-150" />
-        </button>
-      </div>
+      {/* Log ud-knap (vises efter login) */}
+      <SignedIn>
+        <div className="mt-4 md:mt-0 flex items-center gap-4">
+          <button
+            onClick={() => signOut()}
+            className="flex items-center gap-2 border border-white px-3 py-1 rounded hover:bg-white hover:text-[#800000] transition-colors"
+          >
+            <MdLogout className="text-xl" />
+            Log ud
+          </button>
+        </div>
+      </SignedIn>
     </section>
   );
 };

@@ -1,11 +1,16 @@
 import Header from "../../components/Header";
 import { getArtworkById } from "../../../lib/smk";
+import { getLocalData } from "../../../lib/local";
 import Image from "next/image";
 //////////////////////////////////////////////////////////////////////////////
 
 export default async function Singleview({ params }) {
   const { id } = params;
   const art = await getArtworkById(id);
+  const allEvents = await getLocalData();
+  const matchingEvents = allEvents.filter(event => 
+    event.artworkIds.includes(art.object_number)
+  );
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +78,21 @@ export default async function Singleview({ params }) {
             </div>
             <div className="w-1/2">
               <p className="leading-loose">{art.labels?.[0]?.text || "N/A"}</p>
+            </div>
+          </div>
+
+          <div className="flex flex-row p-5">
+            <div className="w-1/2 pb-[10%]">
+              <h1 className="text-4xl max-w-[75%]">Værket indgår i følgende events:</h1>
+            </div>
+            <div className="w-1/2">
+              <ul>
+               {matchingEvents.map((event) => (
+                <li className="list-none underline py-2" key={event.id}>
+                  <a href={`/eventsingleview/${event.id}`}>{event.title}</a>
+                </li>
+               ))}
+              </ul>
             </div>
           </div>
 
