@@ -86,10 +86,7 @@ const ConfirmedSektion = () => {
             <br />
             {tickets}x
           </p>
-          <PDFTicketButton
-            event={event}
-            tickets={tickets}
-          />
+          <PDFTicketButton/>
         </div>
       </div>
     </section>
