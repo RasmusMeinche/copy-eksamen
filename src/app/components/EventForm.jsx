@@ -35,7 +35,7 @@ export default function EventForm({ event, onCancel }) {
 
   const [artworks, setArtworks] = useState([]);
   const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
-  const [selectedArtworks, setSelectedArtworks] = useState([]); // Til at holde styr på valgte kunstværker
+  const [selectedArtworks, setSelectedArtworks] = useState(event.artworkIds || []);
 
   
   function load() {
@@ -50,7 +50,32 @@ export default function EventForm({ event, onCancel }) {
  
   useEffect(() => {
     load();
+
+    // Loader valgte kunstværker, hvis de ikke allerede er hentet (i de 50 der bliver fetch'et)
+    async function preloadSelectedArtworks() {
+      if (!event.artworkIds || event.artworkIds.length === 0) return;
+
+      const missingIds = event.artworkIds.filter(
+        id => !artworks.some(a => a.object_number === id)
+      );
+
+      const fetchedArtworks = await Promise.all(missingIds.map(fetchArtworkById));
+
+      setArtworks(prev => [...fetchedArtworks, ...prev]);
+      setSelectedArtworks(event.artworkIds);
+    }
+
+    preloadSelectedArtworks();
   }, []);
+
+  // Fetcher for at hente kunstværker baseret på ID, hvis de ikke allerede er fetchet
+
+  async function fetchArtworkById(id) {
+    const res = await fetch(`https://api.smk.dk/api/v1/art/search/?keys=${id}`);
+    const data = await res.json();
+    return data.items?.[0] || null;
+  }
+
 
   // Rykker valgte kunstværker til toppen af listen¨
 
