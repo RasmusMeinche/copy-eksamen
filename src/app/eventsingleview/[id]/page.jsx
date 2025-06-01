@@ -1,7 +1,6 @@
 import { getLocalData } from "../../../lib/local";
 import { getArtworkById } from "../../../lib/smk";
 
-
 import { notFound } from "next/navigation";
 import Header from "../../components/Header";
 import Link from "next/link";
@@ -14,16 +13,39 @@ export default async function EventSingleView({ params }) {
 
   if (!event) return notFound();
 
- const arts = await Promise.all(
+  const arts = await Promise.all(
     event.artworkIds.map((artworkId) => getArtworkById(artworkId))
   );
 
+  // Hent første artwork for baggrundsbillede og farve
+  const firstArtwork = arts[0];
+  const backgroundColor = firstArtwork?.suggested_bg_color || "#800000";
+  const imageUrl =
+    firstArtwork?.image_thumbnail ||
+    firstArtwork?.image?.thumbnail ||
+    firstArtwork?.image?.web ||
+    firstArtwork?.images?.[0]?.web;
 
   return (
-    <div className="bg-[#800000]">
-      <Header title="EVENTS" />
-      <div className="h-screen text-white">
-        <div className="px-[10%] py-[10%] mt-[5%] border-b-6 border-t-6 border-r-6 w-[60%]">
+    <div style={{ backgroundColor }}>
+      <Header
+        title="EVENTS"
+        bgColor={backgroundColor}
+      />
+
+      {/* Baggrundsbilledet uden overlay */}
+      <div
+        className="relative h-[60vh]"
+        style={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/60" />
+        {/* Den hvide ramme uden venstre kant */}
+        <div className="relative px-[10%] py-[10%] mt-[5%] border border-6 border-white border-l-0 w-[60%] text-white">
           <h1 className="text-5xl font-medium pb-15">{event.title}</h1>
           <Link href={`/checkout?id=${event.id}`}>
             <button
@@ -38,6 +60,7 @@ export default async function EventSingleView({ params }) {
         </div>
       </div>
 
+      {/* Resten af event-teksten */}
       <div className="flex flex-col px-50 pb-50 text-white">
         <div className="flex flex-row p-5">
           <div className="w-1/2">
@@ -68,8 +91,10 @@ export default async function EventSingleView({ params }) {
         </div>
 
         <div className="p-5 pt-20">
-          <h1 className="text-4xl mb-6 text-left">Følgende værker indgår i dette event</h1>
-          <hr className="pb-10"/>
+          <h1 className="text-4xl mb-6 text-left">
+            Følgende værker indgår i dette event
+          </h1>
+          <hr className="pb-10" />
           <div className="grid grid-cols-3 gap-10">
             {arts.map((artwork, index) => {
               const imageUrl =
@@ -80,9 +105,9 @@ export default async function EventSingleView({ params }) {
 
               return (
                 <div key={index}>
-                    <div>
-                      {imageUrl ? (
-                        <Link href={`/singleview/${artwork.object_number}`}>
+                  <div>
+                    {imageUrl ? (
+                      <Link href={`/singleview/${artwork.object_number}`}>
                         <Image
                           src={imageUrl}
                           alt={"Artwork Image"}
@@ -90,13 +115,13 @@ export default async function EventSingleView({ params }) {
                           height={300}
                           className="bg-amber-50 max-h-[200px] object-cover"
                         />
-                        </Link>
-                      ) : (
-                        <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
-                          No Image
-                        </div>
-                      )}
-                    </div>
+                      </Link>
+                    ) : (
+                      <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
+                        No Image
+                      </div>
+                    )}
+                  </div>
                   <p className="mt-2 text-left text-md text-white">
                     {artwork?.titles?.[0]?.title}
                   </p>
