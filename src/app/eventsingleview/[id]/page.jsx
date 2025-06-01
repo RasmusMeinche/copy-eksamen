@@ -33,11 +33,11 @@ export default async function EventSingleView({ params }) {
       />
 
       <div
-        className="relative h-[60vh] mb-24"
+        className="relative w-full h-[60vh] mb-24"
         style={{
           backgroundImage: `url(${imageUrl})`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
@@ -47,7 +47,8 @@ export default async function EventSingleView({ params }) {
           <Link href={`/checkout?id=${event.id}`}>
             <button
               type="submit"
-              className="relative border border-white px-4 py-5 w-40 h-14 hover:bg-white hover:text-[#800000]"
+              className="relative border border-white px-4 py-5 w-40 h-14 hover:bg-white hover:text-[color:var(--hover-color)] cursor-pointer"
+              style={{ "--hover-color": backgroundColor }}
             >
               <span className="absolute bottom-2 left-2 text-left">
                 Book Billetter
@@ -59,7 +60,6 @@ export default async function EventSingleView({ params }) {
 
       {/* Event Info Section */}
       <div className="flex flex-col px-4 sm:px-6 md:px-12 pb-20 pt-6 text-white space-y-10">
-
         {/* Om eventet */}
         <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
           <div className="lg:w-1/2 pb-5 lg:pb-0">
