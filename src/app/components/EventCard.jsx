@@ -33,9 +33,12 @@ export default function EventCard({ searchQuery }) {
 
       setEvents(objectDataList);
     }
+    
 
     fetchData();
   }, []);
+
+  
 
   const filteredEvents = events.filter(({ event }) =>
     [event.title, event.curator, event.description]
