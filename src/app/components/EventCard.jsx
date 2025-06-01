@@ -118,16 +118,15 @@ export default function EventCard() {
             key={event.id}
             className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border border-white mb-10 mt-10 text-white w-full overflow-visible"
           >
-            {/* Image Side */}
-            <div className="flex gap-6 border border-white p-6 items-center">
-              <div className="h-full min-w-[300px] max-w-[300px]">
+            <div className="flex flex-col lg:flex-row gap-6 border border-white p-6 items-center">
+              <div className="h-full lg:min-w-[300px] max-w-[300px]">
                 {imageUrl ? (
                   <Image
                     src={imageUrl}
                     alt="Event Image"
                     width={1080}
                     height={720}
-                    className="bg-amber-50 object-cover max-h-[220px] w-full"
+                    className="bg-amber-50 object-cover  lg:max-h-[220px] w-full"
                   />
                 ) : (
                   <div className="w-full h-[220px] bg-gray-200 flex items-center justify-center text-black rounded-md">
@@ -151,7 +150,7 @@ export default function EventCard() {
 
                 <p className="text-lg font-light mb-4 max-w-[60%]">{event.curator}</p>
 
-                <p className="text-base font-medium max-w-[600px] md:max-w-[70%] leading-7 mb-6 line-clamp-3">
+                <p className="text-base font-medium max-w-[600px] md:max-w-[65%] leading-7 mb-6 line-clamp-3">
                   {event.description}
                 </p>  
 
