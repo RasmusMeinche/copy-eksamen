@@ -2,117 +2,125 @@ import Header from "../../components/Header";
 import { getArtworkById } from "../../../lib/smk";
 import { getLocalData } from "../../../lib/local";
 import Image from "next/image";
-//////////////////////////////////////////////////////////////////////////////
 
 export default async function Singleview({ params }) {
   const { id } = params;
   const art = await getArtworkById(id);
   const allEvents = await getLocalData();
-  const matchingEvents = allEvents.filter(event => 
+  const matchingEvents = allEvents.filter(event =>
     event.artworkIds.includes(art.object_number)
   );
 
-  //////////////////////////////////////////////////////////////////////////////
-
   return (
     <section>
-      <div
-        key={art.id}
-        style={{ backgroundColor: art.suggested_bg_color }}
-      >
-        <Header
-          title="EVENTS"
-          bgColor={art.suggested_bg_color}
-        />
+      <div key={art.id} style={{ backgroundColor: art.suggested_bg_color }}>
+        <Header title="EVENTS" bgColor={art.suggested_bg_color} />
+
+        {/* Image + Title section */}
         <div
-          className="flex pt-10 px-12 pb-10 gap-10"
+          className="flex flex-col lg:flex-row pt-6 px-4 sm:px-6 md:px-12 pb-10 gap-8"
           style={{ backgroundColor: art.suggested_bg_color }}
         >
-          <Image
-            alt={art.titles?.[0]?.title || "Artwork Image"}
-            width={750}
-            height={750}
-            className="shadow-xl/50"
-            src={art.image_thumbnail}
-          />
-          <div className="flex flex-col p-5">
-            <h1 className="font-bold text-3xl text-white">
+          <div className="w-full lg:w-[750px] flex justify-center lg:justify-start">
+            <Image
+              alt={art.titles?.[0]?.title || "Artwork Image"}
+              width={750}
+              height={750}
+              priority
+              className="w-full h-auto max-w-full shadow-2xl"
+              src={art.image_thumbnail}
+            />
+          </div>
+
+          <div className="flex flex-col text-left p-4 sm:p-6 text-white">
+            <h1 className="font-extrabold text-3xl sm:text-4xl mb-4 leading-tight">
               {art.titles?.[0]?.title}
             </h1>
-            <h2 className="pt-5 font-thin text-2xl text-white">
-              {art.techniques} - <br /> {art.artist}
+            <h2 className="font-light text-lg sm:text-xl">
+              {art.techniques} <br className="sm:hidden" />- {art.artist}
             </h2>
           </div>
         </div>
 
-        <div className="flex flex-col px-50 pb-50 pt-20 text-white">
-          <div className="flex flex-row p-5">
-            <div className="w-1/2 pb-[10%]">
-              <h1 className="text-4xl">Kunstner:</h1>
+
+        {/* Details Section */}
+        <div className="flex flex-col px-4 sm:px-6 md:px-12 pb-20 pt-6 text-white space-y-10">
+
+          {/* Artist Info */}
+          <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+            <div className="lg:w-1/2 pb-5 lg:pb-0">
+              <h2 className="text-2xl lg:text-3xl font-semibold">Kunstner:</h2>
             </div>
-            <div className="w-1/2 flex flex-row gap-20">
+            <div className="lg:w-1/2 flex flex-col sm:flex-row gap-6 lg:gap-20">
               <div>
-                <p className="font-bold text-2xl pb-3">Navn</p>
+                <p className="font-bold text-lg pb-1">Navn</p>
                 <p>{art.artist || "N/A"}</p>
               </div>
               <div>
-                <p className="font-bold text-2xl pb-3">Nationalitet</p>
+                <p className="font-bold text-lg pb-1">Nationalitet</p>
                 <p>{art.production?.[0]?.creator_nationality || "N/A"}</p>
               </div>
               <div>
-                <p className="font-bold text-2xl pb-3">Levetid</p>
+                <p className="font-bold text-lg pb-1">Levetid</p>
                 <p>
-                  {art.production?.[0]?.creator_date_of_birth?.slice(0, 4) ||
-                    "N/A"}{" "}
-                  -{" "}
-                  {art.production?.[0]?.creator_date_of_death?.slice(0, 4) ||
-                    "N/A"}
+                  {art.production?.[0]?.creator_date_of_birth?.slice(0, 4) || "N/A"} –{" "}
+                  {art.production?.[0]?.creator_date_of_death?.slice(0, 4) || "N/A"}
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-row p-5">
-            <div className="w-1/2 pb-[10%]">
-              <h1 className="text-4xl">Om værket:</h1>
+          {/* About the Artwork */}
+          <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+            <div className="lg:w-1/2 pb-5 lg:pb-0">
+              <h2 className="text-2xl lg:text-3xl font-semibold">Om værket:</h2>
             </div>
-            <div className="w-1/2">
-              <p className="leading-loose">{art.labels?.[0]?.text || "N/A"}</p>
-            </div>
-          </div>
-
-          <div className="flex flex-row p-5">
-            <div className="w-1/2 pb-[10%]">
-              <h1 className="text-4xl max-w-[75%]">Værket indgår i følgende events:</h1>
-            </div>
-            <div className="w-1/2">
-              <ul>
-               {matchingEvents.map((event) => (
-                <li className="list-none underline py-2" key={event.id}>
-                  <a href={`/eventsingleview/${event.id}`}>{event.title}</a>
-                </li>
-               ))}
-              </ul>
+            <div className="lg:w-1/2">
+              <p className="leading-relaxed">{art.labels?.[0]?.text || "N/A"}</p>
             </div>
           </div>
 
-          <div className="flex flex-row p-5">
-            <div className="w-1/2">
-              <h1 className="text-4xl">Teknik og Farver:</h1>
+          {/* Events */}
+          <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+            <div className="lg:w-1/2 pb-5 lg:pb-0">
+              <h2 className="text-2xl lg:text-3xl font-semibold">
+                Værket indgår i følgende events:
+              </h2>
             </div>
-            <div className="w-1/2">
-              <p className="pb-5">
+            <div className="lg:w-1/2 flex flex-col gap-3">
+              {matchingEvents.length > 0 ? (
+                matchingEvents.map((event) => (
+                  <a
+                    key={event.id}
+                    href={`/eventsingleview/${event.id}`}
+                    className="underline text-base sm:text-lg hover:opacity-80 transition"
+                  >
+                    {event.title}
+                  </a>
+                ))
+              ) : (
+                <p className="italic text-sm">Ingen events tilknyttet.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Techniques & Colors */}
+          <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+            <div className="lg:w-1/2 pb-5 lg:pb-0">
+              <h2 className="text-2xl lg:text-3xl font-semibold">Teknik og Farver:</h2>
+            </div>
+            <div className="lg:w-1/2">
+              <p className="pb-4">
                 <strong>Teknik:</strong> {art.techniques || "N/A"}
               </p>
-              <p>
-                <strong>Farver:</strong>
-              </p>
-              <div className="flex flex-wrap pt-5 gap-2.5 max-w-[25rem]">
+              <p className="pb-2 font-medium">Farver:</p>
+              <div className="flex flex-wrap gap-3">
                 {art.colors?.map((hex) => (
                   <div
                     key={hex}
-                    className="w-12 h-12 rounded-full flex-shrink-0 shadow-xl/30"
+                    className="w-10 h-10 rounded-full shadow-lg"
                     style={{ backgroundColor: hex }}
+                    title={hex}
                   />
                 ))}
               </div>
