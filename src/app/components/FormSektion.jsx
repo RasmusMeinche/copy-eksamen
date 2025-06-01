@@ -20,6 +20,15 @@ const FormSektion = ({ event }) => {
       return;
     }
 
+    // Tilføjet log med overblik over billetdata
+    console.log({
+      bookedeBilletter: parseInt(data.tickets),
+      tidligereBooket: event.bookedTickets,
+      totalBilletter: event.totalTickets,
+      opdateretTilgængelig:
+        event.totalTickets - (event.bookedTickets + parseInt(data.tickets)),
+    });
+
     try {
       const response = await fetch(
         `https://eventdatabase.onrender.com/events/${event.id}/book`,
