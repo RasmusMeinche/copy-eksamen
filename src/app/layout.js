@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Roboto, Lora } from "next/font/google";
 import Footer from "./components/Footer";
+import { Suspense } from "react"; // <-- Importer Suspense
 
 const robotoCondensed = Roboto_Condensed({
   subsets: ["latin"],
@@ -36,7 +37,7 @@ export default function RootLayout({ children }) {
         className={robotoCondensed.variable}
       >
         <body className="font-roboto-condensed">
-          {children}
+          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
           <Footer />
         </body>
       </html>
