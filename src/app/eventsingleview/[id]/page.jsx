@@ -76,7 +76,7 @@ export default async function EventSingleView({ params }) {
           <div className="w-1/2">
             <h1 className="text-4xl">Værker:</h1>
           </div>
-          <div className="w-1/2 flex flex-wrap gap-4">
+          <div className="w-1/2 grid grid-cols-3 gap-4">
             {arts.map((artworkId, index) => {
               const imageUrl = 
               artworkId?.image_thumbnail || 
