@@ -20,7 +20,7 @@ export default function CreateEvent({ onCancel }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(103540);
+  const [offset, setOffset] = useState(51540);
   const [selectedArtworks, setSelectedArtworks] = useState([]);
 
   useEffect(() => {
@@ -229,7 +229,7 @@ export default function CreateEvent({ onCancel }) {
         Vælg kunstværker til event:
       </h2>
       <div className="my-6 mx-2 p-5 h-[600px] overflow-y-auto">
-        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 sm:p-2">
+        <ul className="grid grid-cols-2 md:grid-cols-5 gap-4 sm:p-2">
           {sortedArtworks
             .filter((art) => {
               if (!art?.has_image) return false;

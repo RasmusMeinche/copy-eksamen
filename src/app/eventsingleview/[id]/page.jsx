@@ -109,7 +109,7 @@ export default async function EventSingleView({ params }) {
               return (
                 <div key={index}>
                   {imageUrl ? (
-                    <Link href={`/singleview/${artwork.object_number}`}>
+                    <Link href={`/singleview/${encodeURIComponent(artwork.object_number)}`}>
                       <Image
                         src={imageUrl}
                         alt="Artwork"
