@@ -292,7 +292,7 @@ export default function CreateEvent({ onCancel }) {
           onClick={onCancel}
           className="bg-[#800000] text-white lg:text-2xl xl:text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
         >
-          Slet Event
+          Annuller
         </button>
         <button
           type="submit"
