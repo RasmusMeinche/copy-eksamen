@@ -38,7 +38,7 @@ const Header = ({ title, bgColor = "#800000" }) => {
           </h1>
         </SignedOut>
         <SignedIn>
-          <h1 className="font-thin text-[11cqw] sm:text-[3.8cqw] md:text-[5.2cqw] lg:text-[6.5cqw] xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]">
+          <h1 className="font-thin text-3xl sm:text-3xl md:text-4xl lg:text-7xl xl:text-[7cqw] 2xl:text-[7.3cqw] leading-none relative sm:top-[-2px] md:top-[-2px] lg:top-[-5px] top-[-2px]">
             KURATOR
           </h1>
         </SignedIn>
