@@ -2,9 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Roboto, Lora } from "next/font/google";
 import Footer from "./components/Footer";
-import { Suspense } from "react"; // <-- Importer Suspense
 
 const robotoCondensed = Roboto_Condensed({
   subsets: ["latin"],
@@ -31,13 +29,14 @@ export default function RootLayout({ children }) {
   return (
     <ClerkProvider
       publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      __unstable_invokeMiddlewareOnClient={true}
     >
       <html
         lang="da"
-        className={robotoCondensed.variable}
+        className={`${robotoCondensed.variable} ${geistSans.variable} ${geistMono.variable}`}
       >
         <body className="font-roboto-condensed">
-          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+          {children}
           <Footer />
         </body>
       </html>
