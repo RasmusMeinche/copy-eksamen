@@ -20,7 +20,7 @@ export default function CreateEvent({ onCancel }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(51540);
+  const [offset, setOffset] = useState(51540);  // Begynd med at hente fra offset 51540, fordi her er billederne farverige og flotte
   const [selectedArtworks, setSelectedArtworks] = useState([]);
 
   useEffect(() => {
