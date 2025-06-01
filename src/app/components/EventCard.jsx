@@ -127,7 +127,7 @@ export default function EventCard() {
                     alt="Event Image"
                     width={1080}
                     height={720}
-                    className="bg-amber-50 object-cover rounded-md max-h-[220px] w-full"
+                    className="bg-amber-50 object-cover max-h-[220px] w-full"
                   />
                 ) : (
                   <div className="w-full h-[220px] bg-gray-200 flex items-center justify-center text-black rounded-md">
