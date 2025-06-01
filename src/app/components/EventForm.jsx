@@ -11,70 +11,14 @@ export default function EventForm({ event, onCancel }) {
     description: event.description,
   });
 
-  function handleTitleChange(e) {
-    setEventInfo((prev) => ({ ...prev, title: e.target.value }));
-  }
-
-  function handleCuratorChange(e) {
-    setEventInfo((prev) => ({ ...prev, curator: e.target.value }));
-  }
-
-  function handleDateChange(e) {
-    setEventInfo((prev) => ({ ...prev, date: e.target.value }));
-  }
-
-
-  function handleDescriptionChange(e) {
-    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
-  }
-
-  async function handleUpdate(e) {
-    e.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventInfo),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update event");
-      }
-
-      alert("Event opdateret!");
-      window.location.href = "/"; // Luk boksen efter opdatering
-    } catch (error) {
-      console.error("Error updating event:", error);
-      alert("Noget gik galt under opdateringen.");
-    }
-  }
-
-  async function handleDelete() {
-    if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
-
-    try {
-      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete event");
-      }
-
-      alert("Event slettet!");
-      if (onCancel) onCancel(); // Luk boksen efter sletning
-    } catch (error) {
-      console.error("Error deleting event:", error);
-      alert("Noget gik galt under sletningen.");
-    }
-  }
-
-    const [locations, setLocations] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [selectedLocationId, setSelectedLocationId] = useState("");
 
-    useEffect(() => {
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
     async function fetchLocations() {
       try {
         const res = await fetch("http://localhost:8080/locations");
@@ -87,9 +31,6 @@ export default function EventForm({ event, onCancel }) {
     }
     fetchLocations();
   }, []);
-
-  const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
 
   function load() {
     fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
@@ -105,11 +46,50 @@ export default function EventForm({ event, onCancel }) {
     load();
   }, []);
 
+  async function handleUpdate(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(eventInfo),
+      });
+
+      if (!response.ok) throw new Error("Failed to update event");
+
+      alert("Event opdateret!");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Noget gik galt under opdateringen.");
+    }
+  }
+
+  async function handleDelete() {
+    if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete event");
+
+      alert("Event slettet!");
+      window.location.href = "/";
+      if (onCancel) onCancel();
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      alert("Noget gik galt under sletningen.");
+    }
+  }
+
   return (
     <form
       className="flex flex-col shadow-md p-4 h-screen overflow-y-auto"
       onSubmit={handleUpdate}
     >
+      {/* FELTER TIL EVENT-INFO */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
         <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
         <input
@@ -117,7 +97,7 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="titel"
           value={eventInfo.title}
-          onChange={handleTitleChange}
+          onChange={(e) => setEventInfo(prev => ({ ...prev, title: e.target.value }))}
         />
       </div>
 
@@ -128,7 +108,7 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="kurator"
           value={eventInfo.curator}
-          onChange={handleCuratorChange}
+          onChange={(e) => setEventInfo(prev => ({ ...prev, curator: e.target.value }))}
         />
       </div>
 
@@ -139,14 +119,12 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="dato"
           value={eventInfo.date}
-          onChange={handleDateChange}
+          onChange={(e) => setEventInfo(prev => ({ ...prev, date: e.target.value }))}
         />
       </div>
 
-     <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="location">
-          Lokation:
-        </label>
+      <div className="flex items-center justify-between shadow-md text-xl my-2">
+        <label className="font-bold pl-4" htmlFor="location">Lokation:</label>
         <select
           id="location"
           className="bg-gray-300 text-white ml-4 p-4 w-1/2"
@@ -167,14 +145,32 @@ export default function EventForm({ event, onCancel }) {
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
           value={eventInfo.description}
-          onChange={handleDescriptionChange}
+          onChange={(e) => setEventInfo(prev => ({ ...prev, description: e.target.value }))}
         />
       </div>
 
+      {/* 🔍 SØGEFELT TIL KUNSTVÆRKER */}
+      <div className="flex justify-center items-center gap-4 my-4">
+        <input
+          type="text"
+          placeholder="Søg efter titel eller kunstner..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border rounded w-1/2"
+        />
+      </div>
+
+      {/* 🎨 VIS KUNSTVÆRKER */}
       <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
       <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
         {artworks
-          .filter((art) => art.has_image)
+          .filter((art) => {
+            if (!art.has_image) return false;
+            const title = art.titles?.[0]?.title?.toLowerCase() || "";
+            const artist = art.artists?.[0]?.name?.toLowerCase() || "";
+            const term = searchTerm.toLowerCase();
+            return title.includes(term) || artist.includes(term);
+          })
           .map((art) => {
             const imgSrc =
               art.image_thumbnail ||
@@ -201,6 +197,7 @@ export default function EventForm({ event, onCancel }) {
           })}
       </ul>
 
+      {/* LOAD MERE KNAP */}
       <button
         type="button"
         onClick={load}
@@ -209,6 +206,7 @@ export default function EventForm({ event, onCancel }) {
         Indlæs flere
       </button>
 
+      {/* ACTION-KNAPPER */}
       <div className="flex justify-center p-4 gap-20">
         <button
           type="button"
