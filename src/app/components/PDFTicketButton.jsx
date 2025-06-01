@@ -4,10 +4,10 @@ import TicketDocument from "./TicketDocument";
 import { useEffect, useState } from "react";
 
 const PDFTicketButton = () => {
-  const [bookingData, setBookingData] = useState(null);
+  const [bookingData, setBookingData] = useState(null); // state til at gemme booking data
 
   useEffect(() => {
-    const stored = localStorage.getItem("bookingConfirmation");
+    const stored = localStorage.getItem("bookingConfirmation"); // Henter booking data fra localStorage
     if (stored) {
       setBookingData(JSON.parse(stored));
     }
@@ -16,7 +16,7 @@ const PDFTicketButton = () => {
   if (!bookingData) return null;
 
   return (
-    <PDFDownloadLink
+    <PDFDownloadLink // Opretter download link til PDF
       document={
         <TicketDocument
           event={bookingData.event}
