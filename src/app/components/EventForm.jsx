@@ -9,14 +9,91 @@ export default function EventForm({ event, onCancel }) {
     date: event.date,
     location: event.location,
     description: event.description,
+    artworkIds: [],
   });
 
   const [locations, setLocations] = useState([]);
   const [selectedLocationId, setSelectedLocationId] = useState("");
 
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
+  const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
+  const [selectedArtworks, setSelectedArtworks] = useState(event.artworkIds || []);
   const [searchTerm, setSearchTerm] = useState("");
+
+  function handleTitleChange(e) {
+    setEventInfo((prev) => ({ ...prev, title: e.target.value }));
+  }
+
+  function handleCuratorChange(e) {
+    setEventInfo((prev) => ({ ...prev, curator: e.target.value }));
+  }
+
+  function handleDateChange(e) {
+    setEventInfo((prev) => ({ ...prev, date: e.target.value }));
+  }
+
+  function handleDescriptionChange(e) {
+    setEventInfo((prev) => ({ ...prev, description: e.target.value }));
+  }
+
+  // Alt om billeder herinde
+  function load() {
+    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+      .then((res) => res.json())
+      .then((data) => {
+        const newArtworks = data.items || [];
+        setArtworks((prev) => [...prev, ...newArtworks]);
+        setOffset((prev) => prev + 50);
+      });
+  }
+
+  useEffect(() => {
+    load();
+
+    // Loader valgte kunstværker, hvis de ikke allerede er hentet (i de 50 der bliver fetch'et)
+    async function preloadSelectedArtworks() {
+      if (!event.artworkIds || event.artworkIds.length === 0) return;
+
+      const missingIds = event.artworkIds.filter(
+        (id) => !artworks.some((a) => a.object_number === id)
+      );
+
+      const fetchedArtworks = await Promise.all(missingIds.map(fetchArtworkById));
+      setArtworks((prev) => [...fetchedArtworks, ...prev]);
+      setSelectedArtworks(event.artworkIds);
+    }
+
+    preloadSelectedArtworks();
+  }, []);
+
+  // Fetcher for at hente kunstværker baseret på ID, hvis de ikke allerede er fetchet
+  async function fetchArtworkById(id) {
+    const res = await fetch(`https://api.smk.dk/api/v1/art/search/?keys=${id}`);
+    const data = await res.json();
+    return data.items?.[0] || null;
+  }
+
+  // Rykker valgte kunstværker til toppen af listen
+  function Select(artObjectNumber) {
+    if (!selectedArtworks.includes(artObjectNumber)) {
+      setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
+    } else {
+      setSelectedArtworks(selectedArtworks.filter((id) => id !== artObjectNumber));
+    }
+  }
+
+  // Sorterer kunstværkerne, så de valgte kommer først
+  const sortedArtworks = [
+    ...selectedArtworks
+      .map((objectNumber) => artworks.find((a) => a.object_number === objectNumber))
+      .filter(Boolean),
+    ...artworks.filter((a) => !selectedArtworks.includes(a.object_number)),
+  ];
+
+  // Remove duplicates by object_number
+  const uniqueSortedArtworks = Array.from(
+    new Map(sortedArtworks.map((art) => [art.object_number, art])).values()
+  );
 
   useEffect(() => {
     async function fetchLocations() {
@@ -32,27 +109,20 @@ export default function EventForm({ event, onCancel }) {
     fetchLocations();
   }, []);
 
-  function load() {
-    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
-      .then((res) => res.json())
-      .then((data) => {
-        const newArtworks = data.items || [];
-        setArtworks([...artworks, ...newArtworks]);
-        setOffset(offset + 50);
-      });
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
-
   async function handleUpdate(e) {
     e.preventDefault();
+
+    const updatedEventInfo = {
+      ...eventInfo,
+      artworkIds: selectedArtworks,
+      location: selectedLocationId,
+    };
+
     try {
       const response = await fetch(`http://localhost:8080/events/${event.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(eventInfo),
+        body: JSON.stringify(updatedEventInfo),
       });
 
       if (!response.ok) throw new Error("Failed to update event");
@@ -76,8 +146,7 @@ export default function EventForm({ event, onCancel }) {
       if (!response.ok) throw new Error("Failed to delete event");
 
       alert("Event slettet!");
-      window.location.href = "/";
-      if (onCancel) onCancel();
+      if (onCancel) onCancel(); // Luk boksen efter sletning
     } catch (error) {
       console.error("Error deleting event:", error);
       alert("Noget gik galt under sletningen.");
@@ -97,7 +166,7 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="titel"
           value={eventInfo.title}
-          onChange={(e) => setEventInfo(prev => ({ ...prev, title: e.target.value }))}
+          onChange={handleTitleChange}
         />
       </div>
 
@@ -108,7 +177,7 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="kurator"
           value={eventInfo.curator}
-          onChange={(e) => setEventInfo(prev => ({ ...prev, curator: e.target.value }))}
+          onChange={handleCuratorChange}
         />
       </div>
 
@@ -119,7 +188,7 @@ export default function EventForm({ event, onCancel }) {
           type="text"
           id="dato"
           value={eventInfo.date}
-          onChange={(e) => setEventInfo(prev => ({ ...prev, date: e.target.value }))}
+          onChange={handleDateChange}
         />
       </div>
 
@@ -145,7 +214,7 @@ export default function EventForm({ event, onCancel }) {
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
           value={eventInfo.description}
-          onChange={(e) => setEventInfo(prev => ({ ...prev, description: e.target.value }))}
+          onChange={handleDescriptionChange}
         />
       </div>
 
@@ -162,40 +231,47 @@ export default function EventForm({ event, onCancel }) {
 
       {/* 🎨 VIS KUNSTVÆRKER */}
       <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
-      <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
-        {artworks
-          .filter((art) => {
-            if (!art.has_image) return false;
-            const title = art.titles?.[0]?.title?.toLowerCase() || "";
-            const artist = art.artists?.[0]?.name?.toLowerCase() || "";
-            const term = searchTerm.toLowerCase();
-            return title.includes(term) || artist.includes(term);
-          })
-          .map((art) => {
-            const imgSrc =
-              art.image_thumbnail ||
-              art.image?.thumbnail ||
-              art.image?.web ||
-              art.images?.[0]?.web;
-            return (
-              <li
-                className="shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100"
-                key={art.id}
-              >
-                {imgSrc ? (
-                  <img
-                    src={imgSrc}
-                    alt={art.titles?.[0]?.title || "Artwork"}
-                    title={`ID: ${art.id}`}
-                    className="mt-2 w-full h-auto object-cover"
-                  />
-                ) : (
-                  <div className="mt-2 text-gray-500">No image available</div>
-                )}
-              </li>
-            );
-          })}
-      </ul>
+      <div className="my-6 mx-2 p-5 min-h-[600px] overflow-y-auto">
+        <ul className="grid grid-cols-5 gap-4 p-2">
+          {uniqueSortedArtworks
+  .filter((art) => {
+    if (!art.has_image) return false;
+    const title = art.titles?.[0]?.title?.toLowerCase() || "";
+    const artist = art.artists?.[0]?.name?.toLowerCase() || "";
+    const term = searchTerm.toLowerCase();
+    return title.includes(term) || artist.includes(term);
+  })
+  .map((art) => {
+    const imgSrc =
+      art.image_thumbnail ||
+      art.image?.thumbnail ||
+      art.image?.web ||
+      art.images?.[0]?.web;
+              return (
+                <li
+                  key={art.object_number}
+                  onClick={() => Select(art.object_number)}
+                  className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
+                    selectedArtworks.includes(art.object_number)
+                      ? "border-2 border-red-600"
+                      : ""
+                  }`}
+                >
+                  {imgSrc ? (
+                    <img
+                      src={imgSrc}
+                      alt={art.titles?.[0]?.title || "Artwork"}
+                      title={`Object Number: ${art.object_number}`}
+                      className="mt-2 w-full h-auto object-cover"
+                    />
+                  ) : (
+                    <div className="mt-2 text-gray-500">No image available</div>
+                  )}
+                </li>
+              );
+            })}
+        </ul>
+      </div>
 
       {/* LOAD MERE KNAP */}
       <button
