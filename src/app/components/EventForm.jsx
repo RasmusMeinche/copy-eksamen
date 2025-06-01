@@ -108,7 +108,7 @@ export default function EventForm({ event, onCancel }) {
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const res = await fetch("http://localhost:8080/locations");
+        const res = await fetch("https://eventdatabase.onrender.com/locations");
         const data = await res.json();
         setLocations(data);
         if (data.length > 0) setSelectedLocationId(data[0].id);
@@ -130,7 +130,7 @@ export default function EventForm({ event, onCancel }) {
 
     try {
       const response = await fetch(
-        `https://eventdatabase.onrender.com/events${event.id}`,
+        `https://eventdatabase.onrender.com/events/${event.id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -153,7 +153,7 @@ export default function EventForm({ event, onCancel }) {
 
     try {
       const response = await fetch(
-        `https://eventdatabase.onrender.com/events${event.id}`,
+        `https://eventdatabase.onrender.com/events/${event.id}`,
         {
           method: "DELETE",
         }
