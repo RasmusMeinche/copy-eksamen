@@ -11,9 +11,6 @@ export default function EventForm({ event, onCancel }) {
     description: event.description,
   });
 
-  const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
-
   function handleTitleChange(e) {
     setEventInfo((prev) => ({ ...prev, title: e.target.value }));
   }
@@ -91,7 +88,10 @@ export default function EventForm({ event, onCancel }) {
     fetchLocations();
   }, []);
 
-  function loadMore() {
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500);
+
+  function load() {
     fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
       .then((res) => res.json())
       .then((data) => {
@@ -102,7 +102,7 @@ export default function EventForm({ event, onCancel }) {
   }
 
   useEffect(() => {
-    loadMore();
+    load();
   }, []);
 
   return (
@@ -203,7 +203,7 @@ export default function EventForm({ event, onCancel }) {
 
       <button
         type="button"
-        onClick={loadMore}
+        onClick={load}
         className="text-[#800000] border-2 border-[#800000] py-2 px-4 mb-10 mt-5 mx-auto hover:bg-[#800000] hover:text-white"
       >
         Indlæs flere

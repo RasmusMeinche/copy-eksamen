@@ -2,26 +2,26 @@ import { getLocalData } from "../../../lib/local";
 
 import { notFound } from "next/navigation";
 import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
 export default async function EventSingleView({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const allEvents = await getLocalData();
   const event = allEvents.find((e) => e.id === id);
 
   if (!event) return notFound();
 
-  const arts = await Promise.all(
-    event.artworkIds.map(async (artworkId) => {
-      const res = await fetch(
-        `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
-      );
-      const data = await res.json();
-      return data.items?.[0];
-    })
-  );
+ const arts = await Promise.all(
+  event.artworkIds.map(async (artworkId) => {
+    const res = await fetch(
+      `https://api.smk.dk/api/v1/art?object_number=${artworkId}`
+    );
+    const data = await res.json();
+    console.log(`Data for artworkId ${artworkId}:`, data);
+    return data.items?.[0];
+  })
+);
 
   return (
     <div className="bg-[#800000]">
@@ -77,11 +77,17 @@ export default async function EventSingleView({ params }) {
             <h1 className="text-4xl">Værker:</h1>
           </div>
           <div className="w-1/2 flex flex-wrap gap-4">
-            {arts.map((art, index) => {
-              const imageUrl = art?.image_thumbnail;
+            {arts.map((artworkId, index) => {
+              const imageUrl = 
+              artworkId?.image_thumbnail || 
+              artworkId?.image?.thumbnail || 
+              artworkId?.image?.web || 
+              artworkId?.images?.[0]?.web;
+              console.log("imageUrl", imageUrl);
+              console.log("Artwork IDs from event:", event.artworkIds);
               return imageUrl ? (
                 <Link
-                  href={`/singleview/${art.object_number}`}
+                  href={`/singleview/${artworkId.object_number}`}
                   key={index}
                 >
                   <Image
