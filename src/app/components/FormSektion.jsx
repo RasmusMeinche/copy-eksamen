@@ -20,9 +20,18 @@ const FormSektion = ({ event }) => {
       return;
     }
 
+    // Tilføjet log med overblik over billetdata
+    console.log({
+      bookedeBilletter: parseInt(data.tickets),
+      tidligereBooket: event.bookedTickets,
+      totalBilletter: event.totalTickets,
+      opdateretTilgængelig:
+        event.totalTickets - (event.bookedTickets + parseInt(data.tickets)),
+    });
+
     try {
       const response = await fetch(
-        `http://localhost:8080/events/${event.id}/book`,
+        `https://eventdatabase.onrender.com/events/${event.id}/book`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -42,6 +51,8 @@ const FormSektion = ({ event }) => {
         JSON.stringify({
           event: event,
           tickets: parseInt(data.tickets),
+          name: data.name,
+          email: data.email,
         })
       );
 
