@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 
-const Hero = ({children}) => {
-
+const Hero = ({ children }) => {
   const scroll = () => {
     window.scrollBy({
       top: window.innerHeight,
@@ -27,8 +26,11 @@ const Hero = ({children}) => {
           <button
             onClick={scroll}
             type="submit"
-            className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border hover:bg-white hover:border-0 hover:text-cyan-900 cursor-pointer">
-            Se Events
+            className="relative border border-white px-4 py-5 w-50 h-20 hover:bg-white hover:text-cyan-900 "
+          >
+            <span className="absolute text-2xl bottom-2 left-2 text-left">
+              Se Events
+            </span>
           </button>
         </div>
       </div>
