@@ -17,7 +17,9 @@ export default function EventForm({ event, onCancel }) {
 
   const [artworks, setArtworks] = useState([]);
   const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
-  const [selectedArtworks, setSelectedArtworks] = useState(event.artworkIds || []);
+  const [selectedArtworks, setSelectedArtworks] = useState(
+    event.artworkIds || []
+  );
   const [searchTerm, setSearchTerm] = useState("");
 
   function handleTitleChange(e) {
@@ -38,7 +40,9 @@ export default function EventForm({ event, onCancel }) {
 
   // Alt om billeder herinde
   function load() {
-    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+    fetch(
+      `https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`
+    )
       .then((res) => res.json())
       .then((data) => {
         const newArtworks = data.items || [];
@@ -58,7 +62,9 @@ export default function EventForm({ event, onCancel }) {
         (id) => !artworks.some((a) => a.object_number === id)
       );
 
-      const fetchedArtworks = await Promise.all(missingIds.map(fetchArtworkById));
+      const fetchedArtworks = await Promise.all(
+        missingIds.map(fetchArtworkById)
+      );
       setArtworks((prev) => [...fetchedArtworks, ...prev]);
       setSelectedArtworks(event.artworkIds);
     }
@@ -78,14 +84,18 @@ export default function EventForm({ event, onCancel }) {
     if (!selectedArtworks.includes(artObjectNumber)) {
       setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
     } else {
-      setSelectedArtworks(selectedArtworks.filter((id) => id !== artObjectNumber));
+      setSelectedArtworks(
+        selectedArtworks.filter((id) => id !== artObjectNumber)
+      );
     }
   }
 
   // Sorterer kunstværkerne, så de valgte kommer først
   const sortedArtworks = [
     ...selectedArtworks
-      .map((objectNumber) => artworks.find((a) => a.object_number === objectNumber))
+      .map((objectNumber) =>
+        artworks.find((a) => a.object_number === objectNumber)
+      )
       .filter(Boolean),
     ...artworks.filter((a) => !selectedArtworks.includes(a.object_number)),
   ];
@@ -119,11 +129,14 @@ export default function EventForm({ event, onCancel }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedEventInfo),
-      });
+      const response = await fetch(
+        `https://eventdatabase.onrender.com/events${event.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedEventInfo),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to update event");
 
@@ -139,9 +152,12 @@ export default function EventForm({ event, onCancel }) {
     if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `https://eventdatabase.onrender.com/events${event.id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to delete event");
 
@@ -160,7 +176,12 @@ export default function EventForm({ event, onCancel }) {
     >
       {/* FELTER TIL EVENT-INFO */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="titel">Titel:</label>
+        <label
+          className="font-bold pl-4 bg-white"
+          htmlFor="titel"
+        >
+          Titel:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -171,7 +192,12 @@ export default function EventForm({ event, onCancel }) {
       </div>
 
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="kurator">Kurator:</label>
+        <label
+          className="font-bold pl-4 bg-white"
+          htmlFor="kurator"
+        >
+          Kurator:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -182,7 +208,12 @@ export default function EventForm({ event, onCancel }) {
       </div>
 
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4 bg-white" htmlFor="dato">Dato:</label>
+        <label
+          className="font-bold pl-4 bg-white"
+          htmlFor="dato"
+        >
+          Dato:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -193,7 +224,12 @@ export default function EventForm({ event, onCancel }) {
       </div>
 
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="location">Lokation:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="location"
+        >
+          Lokation:
+        </label>
         <select
           id="location"
           className="bg-gray-300 text-white ml-4 p-4 w-1/2"
@@ -201,7 +237,10 @@ export default function EventForm({ event, onCancel }) {
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
           {locations.map((loc) => (
-            <option key={loc.id} value={loc.id}>
+            <option
+              key={loc.id}
+              value={loc.id}
+            >
               {loc.name} – {loc.address}
             </option>
           ))}
@@ -209,7 +248,12 @@ export default function EventForm({ event, onCancel }) {
       </div>
 
       <div className="my-4 shadow-md text-xl flex flex-col">
-        <label className="font-bold mb-2 mx-4 py-2" htmlFor="beskrivelse">Beskrivelse:</label>
+        <label
+          className="font-bold mb-2 mx-4 py-2"
+          htmlFor="beskrivelse"
+        >
+          Beskrivelse:
+        </label>
         <textarea
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="beskrivelse"
@@ -230,23 +274,25 @@ export default function EventForm({ event, onCancel }) {
       </div>
 
       {/* 🎨 VIS KUNSTVÆRKER */}
-      <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
+      <h2 className="font-bold text-left pl-4 text-xl my-4">
+        Vælg kunstværker til event:
+      </h2>
       <div className="my-6 mx-2 p-5 min-h-[600px] overflow-y-auto">
         <ul className="grid grid-cols-5 gap-4 p-2">
           {uniqueSortedArtworks
-  .filter((art) => {
-    if (!art.has_image) return false;
-    const title = art.titles?.[0]?.title?.toLowerCase() || "";
-    const artist = art.artists?.[0]?.name?.toLowerCase() || "";
-    const term = searchTerm.toLowerCase();
-    return title.includes(term) || artist.includes(term);
-  })
-  .map((art) => {
-    const imgSrc =
-      art.image_thumbnail ||
-      art.image?.thumbnail ||
-      art.image?.web ||
-      art.images?.[0]?.web;
+            .filter((art) => {
+              if (!art.has_image) return false;
+              const title = art.titles?.[0]?.title?.toLowerCase() || "";
+              const artist = art.artists?.[0]?.name?.toLowerCase() || "";
+              const term = searchTerm.toLowerCase();
+              return title.includes(term) || artist.includes(term);
+            })
+            .map((art) => {
+              const imgSrc =
+                art.image_thumbnail ||
+                art.image?.thumbnail ||
+                art.image?.web ||
+                art.images?.[0]?.web;
               return (
                 <li
                   key={art.object_number}

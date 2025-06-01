@@ -22,7 +22,7 @@ const FormSektion = ({ event }) => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/events/${event.id}/book`,
+        `https://eventdatabase.onrender.com/events${event.id}/book`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

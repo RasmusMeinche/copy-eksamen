@@ -25,7 +25,7 @@ export default function Home() {
     }
 
     fetchData();
-  }, [eventIdFromParams]); // Lyt til ændringer i URL
+  }, [eventIdFromParams]);
 
   if (!eventData) {
     return <div>Loading...</div>;

@@ -26,7 +26,7 @@ export default function CreateEvent({ onCancel }) {
   useEffect(() => {
     async function fetchLocations() {
       try {
-        const res = await fetch("http://localhost:8080/locations");
+        const res = await fetch("https://eventdatabase.onrender.com/locations");
         const data = await res.json();
         setLocations(data);
         if (data.length > 0) setSelectedLocationId(data[0].id);
@@ -52,7 +52,7 @@ export default function CreateEvent({ onCancel }) {
         bookedTickets: [],
       };
 
-      const res = await fetch("http://localhost:8080/events", {
+      const res = await fetch("https://eventdatabase.onrender.com/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -74,17 +74,22 @@ export default function CreateEvent({ onCancel }) {
     if (!selectedArtworks.includes(artObjectNumber)) {
       setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
     } else {
-      setSelectedArtworks(selectedArtworks.filter((id) => id !== artObjectNumber));
+      setSelectedArtworks(
+        selectedArtworks.filter((id) => id !== artObjectNumber)
+      );
     }
   }
 
   function load() {
-    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+    fetch(
+      `https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`
+    )
       .then((res) => res.json())
       .then((data) => {
         const newArtworks = data.items || [];
         const unique = newArtworks.filter(
-          (item) => !artworks.some((a) => a.object_number === item.object_number)
+          (item) =>
+            !artworks.some((a) => a.object_number === item.object_number)
         );
         setArtworks([...artworks, ...unique]);
         setOffset(offset + 50);
@@ -93,7 +98,9 @@ export default function CreateEvent({ onCancel }) {
 
   const sortedArtworks = [
     ...selectedArtworks
-      .map((objectNumber) => artworks.find((a) => a.object_number === objectNumber))
+      .map((objectNumber) =>
+        artworks.find((a) => a.object_number === objectNumber)
+      )
       .filter(Boolean),
     ...artworks.filter((a) => !selectedArtworks.includes(a.object_number)),
   ];
@@ -103,19 +110,23 @@ export default function CreateEvent({ onCancel }) {
       className="relative flex flex-col shadow-md p-4 h-full bg-white"
       onSubmit={handleSubmit}
     >
-            <button
-              className="absolute top-2 right-2 px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
-              onClick={onCancel}
-              type="button"
-              aria-label="Luk"
-            >
-              X
-            </button>
-
+      <button
+        className="absolute top-2 right-2 px-3 py-1 bg-red-600 text-white rounded cursor-pointer"
+        onClick={onCancel}
+        type="button"
+        aria-label="Luk"
+      >
+        X
+      </button>
 
       {/* Titel */}
       <div className="flex items-center justify-between shadow-md text-xl my-2 mt-16">
-        <label className="font-bold pl-4" htmlFor="title">Titel:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="title"
+        >
+          Titel:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           placeholder="Event navn"
@@ -128,7 +139,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Kurator */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="curator">Kurator:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="curator"
+        >
+          Kurator:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="text"
@@ -141,7 +157,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Dato */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="date">Dato:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="date"
+        >
+          Dato:
+        </label>
         <input
           className="bg-gray-300 ml-4 p-4 text-white w-1/2"
           type="date"
@@ -153,7 +174,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Lokation vælger */}
       <div className="flex items-center justify-between shadow-md text-xl my-2">
-        <label className="font-bold pl-4" htmlFor="location">Lokation:</label>
+        <label
+          className="font-bold pl-4"
+          htmlFor="location"
+        >
+          Lokation:
+        </label>
         <select
           id="location"
           className="bg-gray-300 text-white ml-4 p-4 w-1/2"
@@ -161,7 +187,10 @@ export default function CreateEvent({ onCancel }) {
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
           {locations.map((loc) => (
-            <option key={loc.id} value={loc.id}>
+            <option
+              key={loc.id}
+              value={loc.id}
+            >
               {loc.name} – {loc.address}
             </option>
           ))}
@@ -170,7 +199,12 @@ export default function CreateEvent({ onCancel }) {
 
       {/* Beskrivelse */}
       <div className="my-4 shadow-md text-xl flex flex-col h-[200px]">
-        <label className="font-bold mb-2 mx-4 py-2" htmlFor="description">Beskrivelse:</label>
+        <label
+          className="font-bold mb-2 mx-4 py-2"
+          htmlFor="description"
+        >
+          Beskrivelse:
+        </label>
         <textarea
           className="text-white bg-gray-300 px-4 py-2 h-full resize-none"
           id="description"
@@ -191,7 +225,9 @@ export default function CreateEvent({ onCancel }) {
       </div>
 
       {/* Vælg kunstværker */}
-      <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
+      <h2 className="font-bold text-left pl-4 text-xl my-4">
+        Vælg kunstværker til event:
+      </h2>
       <div className="my-6 mx-2 p-5 h-[600px] overflow-y-auto">
         <ul className="grid grid-cols-5 gap-4 p-2">
           {sortedArtworks
@@ -200,8 +236,12 @@ export default function CreateEvent({ onCancel }) {
               const search = searchTerm.toLowerCase();
               return (
                 art.object_number?.toLowerCase().includes(search) ||
-                art.titles?.some((t) => t.title?.toLowerCase().includes(search)) ||
-                art.creators?.some((c) => c.name?.toLowerCase().includes(search))
+                art.titles?.some((t) =>
+                  t.title?.toLowerCase().includes(search)
+                ) ||
+                art.creators?.some((c) =>
+                  c.name?.toLowerCase().includes(search)
+                )
               );
             })
             .map((art, index) => {
@@ -215,7 +255,9 @@ export default function CreateEvent({ onCancel }) {
                   key={`${art.object_number}-${index}`}
                   onClick={() => Select(art.object_number)}
                   className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
-                    selectedArtworks.includes(art.object_number) ? "border-2 border-red-600" : ""
+                    selectedArtworks.includes(art.object_number)
+                      ? "border-2 border-red-600"
+                      : ""
                   }`}
                 >
                   {imgSrc ? (

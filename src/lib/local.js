@@ -1,7 +1,5 @@
 export async function getLocalData() {
-    const data = await fetch(
-      "http://localhost:8080/events"
-    );
-    const res = await data.json();
-    return res;
-  }
+  const data = await fetch("https://eventdatabase.onrender.com/events");
+  const res = await data.json();
+  return res;
+}
