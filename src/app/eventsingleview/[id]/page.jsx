@@ -57,76 +57,80 @@ export default async function EventSingleView({ params }) {
         </div>
       </div>
 
-      <div className="flex flex-col px-50 pb-50 text-white">
-        <div className="flex flex-row p-5">
-          <div className="w-1/2">
-            <h1 className="text-4xl">Om eventet:</h1>
-          </div>
-          <div className="w-1/2">
-            <p>{event.description}</p>
-          </div>
-        </div>
+      {/* Event Info Section */}
+<div className="flex flex-col px-4 sm:px-6 md:px-12 pb-20 pt-6 text-white space-y-10">
 
-        <div className="flex flex-row p-5">
-          <div className="w-1/2">
-            <h1 className="text-4xl">Lokation:</h1>
-          </div>
-          <div className="w-1/2">
-            <p>{event.location.name}</p>
-            <p>{event.location.address}</p>
-          </div>
-        </div>
+  {/* Om eventet */}
+  <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+    <div className="lg:w-1/2 pb-5 lg:pb-0">
+      <h2 className="text-2xl lg:text-3xl font-semibold">Om eventet:</h2>
+    </div>
+    <div className="lg:w-1/2">
+      <p className="leading-relaxed">{event.description}</p>
+    </div>
+  </div>
 
-        <div className="flex flex-row p-5">
-          <div className="w-1/2">
-            <h1 className="text-4xl">Tid og Dato:</h1>
-          </div>
-          <div className="w-1/2">
-            <p>{event.date}</p>
-          </div>
-        </div>
+  {/* Lokation */}
+  <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+    <div className="lg:w-1/2 pb-5 lg:pb-0">
+      <h2 className="text-2xl lg:text-3xl font-semibold">Lokation:</h2>
+    </div>
+    <div className="lg:w-1/2">
+      <p className="font-bold text-lg pb-1">{event.location.name}</p>
+      <p>{event.location.address}</p>
+    </div>
+  </div>
 
-        <div className="p-5 pt-20">
-          <h1 className="text-4xl mb-6 text-left">
-            Følgende værker indgår i dette event
-          </h1>
-          <hr className="pb-10" />
-          <div className="grid grid-cols-3 gap-10">
-            {arts.map((artwork, index) => {
-              const imageUrl =
-                artwork?.image_thumbnail ||
-                artwork?.image?.thumbnail ||
-                artwork?.image?.web ||
-                artwork?.images?.[0]?.web;
+  {/* Tid og Dato */}
+  <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+    <div className="lg:w-1/2 pb-5 lg:pb-0">
+      <h2 className="text-2xl lg:text-3xl font-semibold">Tid og Dato:</h2>
+    </div>
+    <div className="lg:w-1/2">
+      <p>{event.date}</p>
+    </div>
+  </div>
 
-              return (
-                <div key={index}>
-                  <div>
-                    {imageUrl ? (
-                      <Link href={`/singleview/${artwork.object_number}`}>
-                        <Image
-                          src={imageUrl}
-                          alt={"Artwork Image"}
-                          width={300}
-                          height={300}
-                          className="bg-amber-50 max-h-[200px] object-cover"
-                        />
-                      </Link>
-                    ) : (
-                      <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
-                        No Image
-                      </div>
-                    )}
-                  </div>
-                  <p className="mt-2 text-left text-md text-white">
-                    {artwork?.titles?.[0]?.title}
-                  </p>
-                </div>
-              );
-            })}
+  {/* Værker */}
+  <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
+    <div className="lg:w-1/2 pb-5 lg:pb-0">
+      <h2 className="text-2xl lg:text-3xl font-semibold">
+        Følgende værker indgår i dette event:
+      </h2>
+    </div>
+    <div className="lg:w-1/2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {arts.map((artwork, index) => {
+        const imageUrl =
+          artwork?.image_thumbnail ||
+          artwork?.image?.thumbnail ||
+          artwork?.image?.web ||
+          artwork?.images?.[0]?.web;
+
+        return (
+          <div key={index}>
+            {imageUrl ? (
+              <Link href={`/singleview/${artwork.object_number}`}>
+                <Image
+                  src={imageUrl}
+                  alt="Artwork"
+                  width={400}
+                  height={400}
+                  className="w-full h-64 object-cover bg-amber-50 rounded-lg shadow-lg"
+                />
+              </Link>
+            ) : (
+              <div className="w-full h-64 bg-gray-200 flex items-center justify-center text-black rounded-lg">
+                No Image
+              </div>
+            )}
+            <p className="mt-3 text-md">{artwork?.titles?.[0]?.title}</p>
           </div>
-        </div>
-      </div>
+        );
+      })}
+    </div>
+  </div>
+</div>
+
     </div>
   );
 }
