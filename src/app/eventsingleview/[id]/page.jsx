@@ -17,7 +17,6 @@ export default async function EventSingleView({ params }) {
     event.artworkIds.map((artworkId) => getArtworkById(artworkId))
   );
 
-  // Hent første artwork for baggrundsbillede og farve
   const firstArtwork = arts[0];
   const backgroundColor = firstArtwork?.suggested_bg_color || "#800000";
   const imageUrl =
@@ -33,9 +32,8 @@ export default async function EventSingleView({ params }) {
         bgColor={backgroundColor}
       />
 
-      {/* Baggrundsbilledet uden overlay */}
       <div
-        className="relative h-[60vh]"
+        className="relative h-[60vh] mb-24"
         style={{
           backgroundImage: `url(${imageUrl})`,
           backgroundRepeat: "no-repeat",
@@ -44,8 +42,7 @@ export default async function EventSingleView({ params }) {
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
-        {/* Den hvide ramme uden venstre kant */}
-        <div className="relative px-[10%] py-[10%] mt-[5%] border border-6 border-white border-l-0 w-[60%] text-white">
+        <div className="relative px-[10%] py-[10%] mt-[5%] border-6 border-white border-l-0 w-[60%] text-white">
           <h1 className="text-5xl font-medium pb-15">{event.title}</h1>
           <Link href={`/checkout?id=${event.id}`}>
             <button
@@ -60,7 +57,6 @@ export default async function EventSingleView({ params }) {
         </div>
       </div>
 
-      {/* Resten af event-teksten */}
       <div className="flex flex-col px-50 pb-50 text-white">
         <div className="flex flex-row p-5">
           <div className="w-1/2">
