@@ -20,7 +20,6 @@ const FormSektion = ({ event }) => {
       return;
     }
 
-    // Tilføjet log med overblik over billetdata
     console.log({
       bookedeBilletter: parseInt(data.tickets),
       tidligereBooket: event.bookedTickets,
