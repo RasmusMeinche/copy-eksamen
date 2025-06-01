@@ -1,10 +1,11 @@
-// middleware.ts
+// src/middleware.ts
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
+// Liste over offentlige ruter
+// Her kan du tilføje flere ruter, som ikke skal beskyttes
 const isPublicRoute = createRouteMatcher([
-  "/",
-  "/events",
-  "/events/(.*)",
+  "/", // forside
+  "/events(.*)", // event routes
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/login(.*)",
@@ -14,17 +15,18 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  const { protect } = await auth();
-
   if (!isPublicRoute(req)) {
-    await protect(); // beskyt ikke-offentlige sider
+    await auth.protect();
   }
 });
 
 export const config = {
   matcher: [
-    "/((?!_next|.*\\..*).*)", // matcher alle routes undtagen statiske filer
-    "/(api|trpc)(.*)",        // matcher API og trpc routes
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    // Always run for API routes
+    "/(api|trpc)(.*)",
   ],
 };
+
 
