@@ -175,7 +175,7 @@ export default function EventForm({ event, onCancel }) {
       onSubmit={handleUpdate}
     >
       {/* FELTER TIL EVENT-INFO */}
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4 bg-white"
           htmlFor="titel"
@@ -183,7 +183,7 @@ export default function EventForm({ event, onCancel }) {
           Titel:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 sm:ml-4 p-4 text-white w-full sm:w-1/2"
           type="text"
           id="titel"
           value={eventInfo.title}
@@ -191,7 +191,7 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4 bg-white"
           htmlFor="kurator"
@@ -199,7 +199,7 @@ export default function EventForm({ event, onCancel }) {
           Kurator:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 w-full sm:ml-4 p-4 text-white sm:w-1/2"
           type="text"
           id="kurator"
           value={eventInfo.curator}
@@ -207,7 +207,7 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4 bg-white"
           htmlFor="dato"
@@ -215,7 +215,7 @@ export default function EventForm({ event, onCancel }) {
           Dato:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 sm:ml-4 p-4 w-full text-white sm:w-1/2"
           type="text"
           id="dato"
           value={eventInfo.date}
@@ -223,7 +223,7 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4"
           htmlFor="location"
@@ -232,7 +232,7 @@ export default function EventForm({ event, onCancel }) {
         </label>
         <select
           id="location"
-          className="bg-gray-300 text-white ml-4 p-4 w-1/2"
+          className="bg-gray-300 w-full text-white sm:ml-4 p-4 sm:w-1/2"
           value={selectedLocationId}
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
@@ -262,14 +262,13 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      {/* 🔍 SØGEFELT TIL KUNSTVÆRKER */}
-      <div className="flex justify-center items-center gap-4 my-4">
+      <div className="flex justify-center sm_ items-center gap-4 my-4">
         <input
           type="text"
           placeholder="Søg efter titel eller kunstner..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border rounded w-1/2"
+          className="p-2 border rounded sm:w-3/4 w-full"
         />
       </div>
 
@@ -277,8 +276,8 @@ export default function EventForm({ event, onCancel }) {
       <h2 className="font-bold text-left pl-4 text-xl my-4">
         Vælg kunstværker til event:
       </h2>
-      <div className="my-6 mx-2 p-5 min-h-[600px] overflow-y-auto">
-        <ul className="grid grid-cols-5 gap-4 p-2">
+      <div className="my-6 mx-2 md:p-5 min-h-[600px] overflow-y-auto">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:p-2">
           {uniqueSortedArtworks
             .filter((art) => {
               if (!art.has_image) return false;
@@ -297,7 +296,7 @@ export default function EventForm({ event, onCancel }) {
                 <li
                   key={art.object_number}
                   onClick={() => Select(art.object_number)}
-                  className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
+                  className={`shadow-xl/20 rounded-md p-1 md:p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
                     selectedArtworks.includes(art.object_number)
                       ? "border-2 border-red-600"
                       : ""
@@ -329,17 +328,17 @@ export default function EventForm({ event, onCancel }) {
       </button>
 
       {/* ACTION-KNAPPER */}
-      <div className="flex justify-center p-4 gap-20">
+      <div className="flex justify-center p-4 gap-8 sm:gap-20">
         <button
           type="button"
           onClick={handleDelete}
-          className="bg-[#800000] text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+          className="bg-[#800000] text-white text-s sm:text-xl md:text-2xl lg:text-3xl grid place-items-start items-end w-full sm:w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
         >
           Slet Event
         </button>
         <button
           type="submit"
-          className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
+          className="text-s sm:text-lg md:text-2xl lg:text-3xl grid place-items-start items-end sm:w-1/4 h-[60px] w-full px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
         >
           Opdater Event
         </button>

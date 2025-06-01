@@ -120,7 +120,7 @@ export default function CreateEvent({ onCancel }) {
       </button>
 
       {/* Titel */}
-      <div className="flex items-center justify-between shadow-md text-xl my-2 mt-16">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2 mt-16">
         <label
           className="font-bold pl-4"
           htmlFor="title"
@@ -128,7 +128,7 @@ export default function CreateEvent({ onCancel }) {
           Titel:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 sm:ml-4 p-4 text-white w-full sm:w-1/2"
           placeholder="Event navn"
           type="text"
           id="title"
@@ -138,7 +138,7 @@ export default function CreateEvent({ onCancel }) {
       </div>
 
       {/* Kurator */}
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4"
           htmlFor="curator"
@@ -146,7 +146,7 @@ export default function CreateEvent({ onCancel }) {
           Kurator:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 sm:ml-4 p-4 text-white w-full sm:w-1/2"
           type="text"
           id="curator"
           placeholder="Kuratorens Navn"
@@ -156,7 +156,7 @@ export default function CreateEvent({ onCancel }) {
       </div>
 
       {/* Dato */}
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4"
           htmlFor="date"
@@ -164,7 +164,7 @@ export default function CreateEvent({ onCancel }) {
           Dato:
         </label>
         <input
-          className="bg-gray-300 ml-4 p-4 text-white w-1/2"
+          className="bg-gray-300 sm:ml-4 p-4 text-white w-full sm:w-1/2"
           type="date"
           id="date"
           value={eventInfo.date}
@@ -173,7 +173,7 @@ export default function CreateEvent({ onCancel }) {
       </div>
 
       {/* Lokation vælger */}
-      <div className="flex items-center justify-between shadow-md text-xl my-2">
+      <div className="flex flex-col sm:flex-row items-center justify-between shadow-md text-xl my-2">
         <label
           className="font-bold pl-4"
           htmlFor="location"
@@ -182,7 +182,7 @@ export default function CreateEvent({ onCancel }) {
         </label>
         <select
           id="location"
-          className="bg-gray-300 text-white ml-4 p-4 w-1/2"
+          className="bg-gray-300 text-white sm:ml-4 p-4 w-full sm:w-1/2"
           value={selectedLocationId}
           onChange={(e) => setSelectedLocationId(e.target.value)}
         >
@@ -218,7 +218,7 @@ export default function CreateEvent({ onCancel }) {
         <input
           type="text"
           placeholder="Søg efter titel, kunstner eller objekt nummer..."
-          className="w-1/2 p-2 border border-gray-400 rounded-md"
+          className="sm:w-1/2 p-2 border border-gray-400 rounded-md"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -229,7 +229,7 @@ export default function CreateEvent({ onCancel }) {
         Vælg kunstværker til event:
       </h2>
       <div className="my-6 mx-2 p-5 h-[600px] overflow-y-auto">
-        <ul className="grid grid-cols-5 gap-4 p-2">
+        <ul className="grid grid-cols-2 md:grid-cols-5 gap-4 sm:p-2">
           {sortedArtworks
             .filter((art) => {
               if (!art?.has_image) return false;
@@ -290,13 +290,13 @@ export default function CreateEvent({ onCancel }) {
         <button
           type="button"
           onClick={onCancel}
-          className="bg-[#800000] text-white text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
+          className="bg-[#800000] text-white lg:text-2xl xl:text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 hover:text-[#800000] hover:border-[#800000] hover:border hover:bg-white cursor-pointer"
         >
           Slet Event
         </button>
         <button
           type="submit"
-          className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
+          className="lg:text-2xl xl:text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
         >
           Opret Event
         </button>
