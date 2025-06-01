@@ -37,21 +37,21 @@ function EventLoader() {
 
 export default function Home() {
   return (
-    <section className="bg-[#800000]">
-      <Header title="EVENTS" />
-      <div className="py-10">
-        <div className="flex flex-row">
-          <div className="basis-[60%] border-t-6 border-b-6 border-r-6 border-white p-8 flex flex-col gap-4 justify-between">
-            <h1 className="text-white text-4xl font-[700]">PRODUKT</h1>
-            <div className="flex flex-col justify-between md:flex-col lg:flex-row gap-4">
-              <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
+      <section className="bg-[#800000]">
+        <Header title="EVENTS" />
+        <div className="py-10">
+          <div className="flex flex-row">
+            <div className="basis-[60%] border-t-6 border-b-6 border-r-6 border-white p-8 flex flex-col gap-4 justify-between">
+              <h1 className="text-white text-4xl font-[700]">PRODUKT</h1>
+              <div className="flex flex-col justify-between md:flex-col lg:flex-row gap-4">
                 <EventLoader />
-              </Suspense>
+              </div>
             </div>
+            <div className="basis-[40%]"></div>
           </div>
-          <div className="basis-[40%]"></div>
         </div>
-      </div>
-    </section>
+      </section>
+    </Suspense>
   );
 }
