@@ -33,11 +33,11 @@ export default async function EventSingleView({ params }) {
       />
 
       <div
-        className="relative h-[60vh] mb-24"
+        className="relative w-full h-[60vh] mb-24"
         style={{
           backgroundImage: `url(${imageUrl})`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
+          backgroundSize: "cover",
           backgroundPosition: "center",
         }}
       >
