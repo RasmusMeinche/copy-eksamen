@@ -80,7 +80,7 @@ export default function EventForm({ event, onCancel }) {
   const updatedEventInfo = {
     ...eventInfo,
     artworkIds: selectedArtworks,
-    location: selectedLocationId, // tilføj dette også, hvis du vil gemme lokation
+    location: selectedLocationId,
   };
 
   try {
