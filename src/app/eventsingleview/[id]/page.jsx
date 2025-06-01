@@ -33,7 +33,7 @@ export default async function EventSingleView({ params }) {
       />
 
       <div
-        className="relative w-full h-[60vh] mb-24"
+        className="relative w-full min-h-[60vh] pt-16 mb-24"
         style={{
           backgroundImage: `url(${imageUrl})`,
           backgroundRepeat: "no-repeat",
@@ -42,7 +42,12 @@ export default async function EventSingleView({ params }) {
         }}
       >
         <div className="absolute inset-0 bg-black/60" />
-        <div className="relative px-[10%] py-[10%] mt-[5%] border-6 border-white border-l-0 w-[60%] text-white">
+        <div
+          className="relative mt-6 border-6 border-white border-l-0 text-white
+       px-4 py-6 sm:px-8 sm:py-10 md:px-16 md:py-[10%]
+       max-w-full sm:w-[80%] md:w-[60%]
+       mr-4 sm:mr-0 box-border"
+        >
           <h1 className="text-5xl font-medium pb-15">{event.title}</h1>
           <Link href={`/checkout?id=${event.id}`}>
             <button
