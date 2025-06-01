@@ -116,43 +116,46 @@ export default function EventCard() {
         return (
           <div
             key={event.id}
-            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border mb-10 mt-10 border-white text-white w-full overflow-visible"
+            className="col-start-2 grid grid-cols-[auto,1fr] inset-shadow-sm border border-white mb-10 mt-10 text-white w-full overflow-visible"
           >
-            {/* Billedside */}
-            <div className="flex gap-4 border border-white items-center p-4">
-              <div className="h-full">
+            {/* Image Side */}
+            <div className="flex gap-6 border border-white p-6 items-center">
+              <div className="h-full min-w-[300px] max-w-[300px]">
                 {imageUrl ? (
                   <Image
                     src={imageUrl}
                     alt="Event Image"
                     width={1080}
                     height={720}
-                    className="bg-amber-50 h-full w-full lg:max-h-[220px] object-cover"
+                    className="bg-amber-50 object-cover rounded-md max-h-[220px] w-full"
                   />
                 ) : (
-                  <div className="w-[300px] h-[300px] bg-gray-200 flex items-center justify-center text-black">
+                  <div className="w-full h-[220px] bg-gray-200 flex items-center justify-center text-black rounded-md">
                     No Image
                   </div>
                 )}
               </div>
 
-              {/* Tekstside */}
-              <div className="flex flex-col justify-between w-full leading-none">
-                <div className="flex flex-row justify-between items-end">
-                  <h1 className="font-medium text-3xl">{event.title}</h1>
+              {/* Text Side */}
+              <div className="flex flex-col justify-between w-full leading-relaxed">
+                <div className="flex justify-between items-end mb-2">
+                  <h1 className="font-semibold text-3xl leading-tight max-w-[65%]">{event.title}</h1>
 
-                  {/* Kuratoredit - kun for kuratorer */}
+                  {/* Kurator Edit - only for curators */}
                   <SignedIn>
                     <Link href={`/slug/${event.id}`}>
                       <Kuratoredit />
                     </Link>
                   </SignedIn>
                 </div>
-                <p className="mb-4 font-thin text-xl">{event.curator}</p>
-                <p className="text-m font-medium max-w-[550px] md:w-[70%] lg:w-[50%] lg:mb-4 leading-6">
+
+                <p className="text-lg font-light mb-4 max-w-[60%]">{event.curator}</p>
+
+                <p className="text-base font-medium max-w-[600px] md:max-w-[70%] leading-7 mb-6 line-clamp-3">
                   {event.description}
-                </p>
-                <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-0 lg:gap-0 xl:gap-0 2xl:gap-0 lg:items-end mt-4 lg:mt-0">
+                </p>  
+
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0">
                   <p className="font-extralight text-2xl">{event.date}</p>
                   <Link href={`/eventsingleview/${event.id}`}>
                     <Button title="Læs mere" />
