@@ -9,6 +9,7 @@ export default function EventForm({ event, onCancel }) {
     date: event.date,
     location: event.location,
     description: event.description,
+    artworkIds: [],
   });
 
   function handleTitleChange(e) {
@@ -28,28 +29,80 @@ export default function EventForm({ event, onCancel }) {
     setEventInfo((prev) => ({ ...prev, description: e.target.value }));
   }
 
-  async function handleUpdate(e) {
-    e.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:8080/events/${event.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(eventInfo),
+  ///////////////////////////
+
+  // Alt om billeder herinde
+
+  const [artworks, setArtworks] = useState([]);
+  const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
+  const [selectedArtworks, setSelectedArtworks] = useState([]); // Til at holde styr på valgte kunstværker
+
+  
+  function load() {
+    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+      .then((res) => res.json())
+      .then((data) => {
+        const newArtworks = data.items || [];
+        setArtworks([...artworks, ...newArtworks]);
+        setOffset(offset + 50);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to update event");
-      }
-
-      alert("Event opdateret!");
-      window.location.href = "/"; // Luk boksen efter opdatering
-    } catch (error) {
-      console.error("Error updating event:", error);
-      alert("Noget gik galt under opdateringen.");
-    }
   }
+ 
+  useEffect(() => {
+    load();
+  }, []);
+
+  // Rykker valgte kunstværker til toppen af listen¨
+
+  function Select(artObjectNumber) {
+  if (!selectedArtworks.includes(artObjectNumber)) {
+    setSelectedArtworks([artObjectNumber, ...selectedArtworks]);
+  } else {
+    setSelectedArtworks(selectedArtworks.filter(id => id !== artObjectNumber));
+  }
+  }
+  
+  // Sorterer kunstværkerne, så de valgte kommer først
+  // og de øvrige kommer bagefter
+
+  const sortedArtworks = [
+    ...selectedArtworks
+      .map(objectNumber => artworks.find(a => a.object_number === objectNumber))
+      .filter(Boolean),
+    ...artworks.filter(a => !selectedArtworks.includes(a.object_number))
+  ];
+
+  ///////////////////////////
+
+  async function handleUpdate(e) {
+  e.preventDefault();
+
+  const updatedEventInfo = {
+    ...eventInfo,
+    artworkIds: selectedArtworks,
+    location: selectedLocationId, // tilføj dette også, hvis du vil gemme lokation
+  };
+
+  try {
+    const response = await fetch(`http://localhost:8080/events/${event.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedEventInfo),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update event");
+    }
+
+    alert("Event opdateret!");
+    window.location.href = "/";
+  } catch (error) {
+    console.error("Error updating event:", error);
+    alert("Noget gik galt under opdateringen.");
+  }
+}
 
   async function handleDelete() {
     if (!confirm("Er du sikker på, at du vil slette dette event?")) return;
@@ -86,24 +139,7 @@ export default function EventForm({ event, onCancel }) {
       }
     }
     fetchLocations();
-  }, []);
-
-  const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
-
-  function load() {
-    fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
-      .then((res) => res.json())
-      .then((data) => {
-        const newArtworks = data.items || [];
-        setArtworks([...artworks, ...newArtworks]);
-        setOffset(offset + 50);
-      });
-  }
-
-  useEffect(() => {
-    load();
-  }, []);
+  }, []);  
 
   return (
     <form
@@ -171,35 +207,41 @@ export default function EventForm({ event, onCancel }) {
         />
       </div>
 
-      <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
-      <ul className="grid grid-cols-5 gap-4 my-6 mx-2">
-        {artworks
-          .filter((art) => art.has_image)
-          .map((art) => {
-            const imgSrc =
-              art.image_thumbnail ||
-              art.image?.thumbnail ||
-              art.image?.web ||
-              art.images?.[0]?.web;
-            return (
-              <li
-                className="shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100"
-                key={art.id}
-              >
-                {imgSrc ? (
-                  <img
-                    src={imgSrc}
-                    alt={art.titles?.[0]?.title || "Artwork"}
-                    title={`ID: ${art.id}`}
-                    className="mt-2 w-full h-auto object-cover"
-                  />
-                ) : (
-                  <div className="mt-2 text-gray-500">No image available</div>
-                )}
-              </li>
-            );
-          })}
-      </ul>
+      {/* Vælg kunstværker */}
+    <h2 className="font-bold text-left pl-4 text-xl my-4">Vælg kunstværker til event:</h2>
+    <div className="my-6 mx-2 p-5 min-h-[600px] overflow-y-auto">
+    <ul className="grid grid-cols-5 gap-4 p-2">
+      {sortedArtworks
+        .filter(art => art.has_image)
+        .map(art => {
+          const imgSrc =
+            art.image_thumbnail ||
+            art.image?.thumbnail ||
+            art.image?.web ||
+            art.images?.[0]?.web;
+          return (
+            <li
+              key={art.object_number}
+              onClick={() => Select(art.object_number)}
+              className={`shadow-xl/20 rounded-md p-4 bg-white hover:bg-gray-200 ease-in duration-100 ${
+                selectedArtworks.includes(art.object_number) ? "border-2 border-red-600" : ""
+              }`}
+            >
+            {imgSrc ? (
+          <img
+            src={imgSrc}
+            alt={art.titles?.[0]?.title || "Artwork"}
+            title={`Object Number: ${art.object_number}`}
+            className="mt-2 w-full h-auto object-cover"
+          />
+              ) : (
+                <div className="mt-2 text-gray-500">No image available</div>
+              )}
+            </li>
+          );
+        })}
+    </ul>
+  </div>
 
       <button
         type="button"
