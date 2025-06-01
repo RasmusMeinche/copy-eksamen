@@ -1,22 +1,30 @@
-// src/middleware.ts
-import { clerkMiddleware } from "@clerk/nextjs/server";
+// middleware.ts
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware({
-  publicRoutes: [
-    "/",
-    "/events(.*)",
-    "/sign-in(.*)",
-    "/sign-up(.*)",
-    "/login(.*)",
-    "/checkout(.*)",
-    "/booking-bekraeftelse(.*)",
-    "/singleview(.*)",
-  ],
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/events",
+  "/events/(.*)",
+  "/sign-in(.*)",
+  "/sign-up(.*)",
+  "/login(.*)",
+  "/checkout(.*)",
+  "/booking-bekraeftelse(.*)",
+  "/singleview(.*)",
+]);
+
+export default clerkMiddleware(async (auth, req) => {
+  const { protect } = await auth();
+
+  if (!isPublicRoute(req)) {
+    await protect(); // beskyt ikke-offentlige sider
+  }
 });
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
+    "/((?!_next|.*\\..*).*)", // matcher alle routes undtagen statiske filer
+    "/(api|trpc)(.*)",        // matcher API og trpc routes
   ],
 };
+
