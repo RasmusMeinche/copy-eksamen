@@ -7,14 +7,20 @@ export default async function Singleview({ params }) {
   const { id } = params;
   const art = await getArtworkById(id);
   const allEvents = await getLocalData();
-  const matchingEvents = allEvents.filter(event =>
+  const matchingEvents = allEvents.filter((event) =>
     event.artworkIds.includes(art.object_number)
   );
 
   return (
     <section>
-      <div key={art.id} style={{ backgroundColor: art.suggested_bg_color }}>
-        <Header title="EVENTS" bgColor={art.suggested_bg_color} />
+      <div
+        key={art.id}
+        style={{ backgroundColor: art.suggested_bg_color }}
+      >
+        <Header
+          title="EVENTS"
+          bgColor={art.suggested_bg_color}
+        />
 
         {/* Image + Title section */}
         <div
@@ -42,11 +48,9 @@ export default async function Singleview({ params }) {
           </div>
         </div>
 
-
-        {/* Details Section */}
+        {/* Detaljsektion */}
         <div className="flex flex-col px-4 sm:px-6 md:px-12 pb-20 pt-6 text-white space-y-10">
-
-          {/* Artist Info */}
+          {/* Kunstner */}
           <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
             <div className="lg:w-1/2 pb-5 lg:pb-0">
               <h2 className="text-2xl lg:text-3xl font-semibold">Kunstner:</h2>
@@ -63,20 +67,25 @@ export default async function Singleview({ params }) {
               <div>
                 <p className="font-bold text-lg pb-1">Levetid</p>
                 <p>
-                  {art.production?.[0]?.creator_date_of_birth?.slice(0, 4) || "N/A"} –{" "}
-                  {art.production?.[0]?.creator_date_of_death?.slice(0, 4) || "N/A"}
+                  {art.production?.[0]?.creator_date_of_birth?.slice(0, 4) ||
+                    "N/A"}{" "}
+                  –{" "}
+                  {art.production?.[0]?.creator_date_of_death?.slice(0, 4) ||
+                    "N/A"}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* About the Artwork */}
+          {/* Beskrivelse */}
           <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
             <div className="lg:w-1/2 pb-5 lg:pb-0">
               <h2 className="text-2xl lg:text-3xl font-semibold">Om værket:</h2>
             </div>
             <div className="lg:w-1/2">
-              <p className="leading-relaxed">{art.labels?.[0]?.text || "N/A"}</p>
+              <p className="leading-relaxed">
+                {art.labels?.[0]?.text || "N/A"}
+              </p>
             </div>
           </div>
 
@@ -104,10 +113,12 @@ export default async function Singleview({ params }) {
             </div>
           </div>
 
-          {/* Techniques & Colors */}
+          {/* Teknikker og farver */}
           <div className="flex flex-col lg:flex-row p-5 bg-white/10 shadow-lg">
             <div className="lg:w-1/2 pb-5 lg:pb-0">
-              <h2 className="text-2xl lg:text-3xl font-semibold">Teknik og Farver:</h2>
+              <h2 className="text-2xl lg:text-3xl font-semibold">
+                Teknik og Farver:
+              </h2>
             </div>
             <div className="lg:w-1/2">
               <p className="pb-4">
