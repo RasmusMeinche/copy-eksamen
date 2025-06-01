@@ -6,7 +6,9 @@ import Header from "../components/Header";
 import { getLocalData } from "../../lib/local";
 import { useSearchParams } from "next/navigation";
 
-function EventLoader({ eventId }) {
+function EventLoader() {
+  const searchParams = useSearchParams();
+  const eventId = searchParams.get("id");
   const [eventData, setEventData] = React.useState(null);
 
   React.useEffect(() => {
@@ -34,9 +36,6 @@ function EventLoader({ eventId }) {
 }
 
 export default function Home() {
-  const searchParams = useSearchParams();
-  const eventIdFromParams = searchParams.get("id");
-
   return (
     <section className="bg-[#800000]">
       <Header title="EVENTS" />
@@ -46,7 +45,7 @@ export default function Home() {
             <h1 className="text-white text-4xl font-[700]">PRODUKT</h1>
             <div className="flex flex-col justify-between md:flex-col lg:flex-row gap-4">
               <Suspense fallback={<div>Loading...</div>}>
-                <EventLoader eventId={eventIdFromParams} />
+                <EventLoader />
               </Suspense>
             </div>
           </div>
