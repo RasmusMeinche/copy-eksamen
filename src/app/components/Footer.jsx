@@ -1,12 +1,12 @@
 "use client";
 
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 
 const Footer = () => {
   return (
     <section className="bg-[#252525] text-[#8F8997] flex flex-col lg:flex-row justify-between gap-10 px-6 sm:px-10 lg:px-20 py-10 w-full text-center lg:text-left">
       <div className="flex-1 mb-10 lg:mb-0">
-        <h1 className="text-[#F5F5F5] text-3xl mb-5">KONTAKTINFORMATION</h1>
+        <h1 className="text-[#F5F5F5] text-3xl mb-5">KONTAKT</h1>
         <h2 className="text-[#F5F5F5] text-2xl mb-2">ADRESSE</h2>
         <p>Sølvgade</p>
         <p>1307 København K</p>
