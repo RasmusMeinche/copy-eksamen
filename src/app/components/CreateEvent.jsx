@@ -256,7 +256,7 @@ export default function CreateEvent({ onCancel }) {
           type="submit"
           className="text-3xl grid place-items-start items-end w-1/4 h-[60px] px-2 py-1.5 border border-[#800000] text-[#800000] hover:bg-[#800000] hover:text-white cursor-pointer"
         >
-          Opdater Event
+          Opret Event
         </button>
       </div>
     </form>
