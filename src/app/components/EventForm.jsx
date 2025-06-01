@@ -16,7 +16,7 @@ export default function EventForm({ event, onCancel }) {
   const [selectedLocationId, setSelectedLocationId] = useState("");
 
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500); // Begynd med at hente fra offset 80500, fordi her er billederne farverige og flotte
+  const [offset, setOffset] = useState(51540); // Begynd med at hente fra offset 51540, fordi her er billederne farverige og flotte
   const [selectedArtworks, setSelectedArtworks] = useState(
     event.artworkIds || []
   );
