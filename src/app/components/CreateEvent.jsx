@@ -20,7 +20,7 @@ export default function CreateEvent({ onCancel }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(80500);
+  const [offset, setOffset] = useState(50500);
   const [selectedArtworks, setSelectedArtworks] = useState([]);
 
   useEffect(() => {

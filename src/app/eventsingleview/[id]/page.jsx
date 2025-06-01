@@ -115,7 +115,7 @@ export default async function EventSingleView({ params }) {
                         alt="Artwork"
                         width={400}
                         height={400}
-                        className="w-full h-64 object-cover bg-amber-50 rounded-lg shadow-lg"
+                        className="w-full h-64 object-cover bg-amber-50 shadow-lg"
                       />
                     </Link>
                   ) : (
