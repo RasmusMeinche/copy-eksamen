@@ -27,7 +27,7 @@ export default async function Singleview({ params }) {
               width={750}
               height={750}
               priority
-              className="w-full h-auto max-w-full rounded-xl shadow-2xl"
+              className="w-full h-auto max-w-full shadow-2xl"
               src={art.image_thumbnail}
             />
           </div>
