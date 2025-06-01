@@ -7,7 +7,10 @@ export default function Home() {
   return (
     <section>
       <Hero>
-        <Header title="EVENTS" />
+        <Header
+          title="EVENTS"
+          showAuth={true}
+        />
       </Hero>
       <EventCard />
     </section>

@@ -42,6 +42,8 @@ const FormSektion = ({ event }) => {
         JSON.stringify({
           event: event,
           tickets: parseInt(data.tickets),
+          name: data.name,
+          email: data.email,
         })
       );
 
