@@ -20,7 +20,7 @@ export default function CreateEvent({ onCancel }) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [artworks, setArtworks] = useState([]);
-  const [offset, setOffset] = useState(51540);  // Begynd med at hente fra offset 51540, fordi her er billederne farverige og flotte
+  const [offset, setOffset] = useState(0);
   const [selectedArtworks, setSelectedArtworks] = useState([]);
 
   useEffect(() => {
@@ -37,6 +37,21 @@ export default function CreateEvent({ onCancel }) {
     fetchLocations();
     load();
   }, []);
+
+  useEffect(() => {
+  if (searchTerm.trim().length > 2) {
+    fetch(`https://api.smk.dk/api/v1/art/search/?keys=${encodeURIComponent(searchTerm)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setArtworks(data.items || []); // søger i hele databasen
+      })
+      .catch((err) => console.error("Søgning fejlede:", err));
+  } else if (searchTerm.trim() === "") {
+    setArtworks([]);    // ryd søgningen
+    setOffset(0);
+    load();             // hent 50 værker igen
+  }
+}, [searchTerm]);
 
   function handleChange(field, value) {
     setEventInfo((prev) => ({ ...prev, [field]: value }));
@@ -80,21 +95,19 @@ export default function CreateEvent({ onCancel }) {
     }
   }
 
-  function load() {
-    fetch(
-      `https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        const newArtworks = data.items || [];
-        const unique = newArtworks.filter(
-          (item) =>
-            !artworks.some((a) => a.object_number === item.object_number)
-        );
-        setArtworks([...artworks, ...unique]);
-        setOffset(offset + 50);
-      });
-  }
+function load() {
+  fetch(`https://api.smk.dk/api/v1/art/search/?keys=*&offset=${offset}&rows=50`)
+    .then((res) => res.json())
+    .then((data) => {
+      const newArtworks = data.items || [];
+      const unique = newArtworks.filter(
+        (item) =>
+          !artworks.some((a) => a.object_number === item.object_number)
+      );
+      setArtworks([...artworks, ...unique]);
+      setOffset(offset + 50);
+    });
+}
 
   const sortedArtworks = [
     ...selectedArtworks
@@ -104,6 +117,7 @@ export default function CreateEvent({ onCancel }) {
       .filter(Boolean),
     ...artworks.filter((a) => !selectedArtworks.includes(a.object_number)),
   ];
+
 
   return (
     <form
