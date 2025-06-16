@@ -249,13 +249,13 @@ function load() {
               if (!art?.has_image) return false;
               const search = searchTerm.toLowerCase();
               return (
-                art.object_number?.toLowerCase().includes(search) ||
-                art.titles?.some((t) =>
-                  t.title?.toLowerCase().includes(search)
+                art.object_number.toLowerCase().includes(search) ||
+                art.titles.some((t) =>
+                  t.title.toLowerCase().includes(search)
                 ) ||
-                art.creators?.some((c) =>
-                  c.name?.toLowerCase().includes(search)
-                )
+                art.production.some((c) =>
+                c.creator.toLowerCase().includes(search)
+              )
               );
             })
             .map((art, index) => {
