@@ -45,7 +45,6 @@ export default function CreateEvent({ onCancel }) {
       .then((data) => {
         setArtworks(data.items || []); // søger i hele databasen
       })
-      .catch((err) => console.error("Søgning fejlede:", err));
   } else if (searchTerm.trim() === "") {
     setArtworks([]);    // ryd søgningen
     setOffset(0);
